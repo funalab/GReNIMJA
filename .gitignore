@@ -1,0 +1,27 @@
+# Mac OSX
+.DS_Store
+
+# Emacs
+*~
+
+# data
+*_Data
+*.pickle
+GCF_000001405.39
+saezlab-dorothea-a814f45
+gene_attribute_edges.txt
+
+
+# result
+*.pt
+result
+
+# gomi
+gomi
+hinan
+test
+
+# other method
+gkmSVM
+dna2vec*
+other_method
