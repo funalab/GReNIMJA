@@ -47,7 +47,7 @@ def train_model(vector, train_datasets, valid_datasets, batch_size, model, lossF
                     ans = ans.to(device)
                     ans2 = ans2.to(device)
 
-                if embedding[0] == 'embedding':
+                if embedding == 'embedding':
                     aseq = model.amino_embed(aseq)
                     dseq = model.dna_embed(dseq)
 
@@ -98,7 +98,7 @@ def train_model(vector, train_datasets, valid_datasets, batch_size, model, lossF
                         ans = ans.to(device)
                         ans2 = ans2.to(device)
 
-                    if embedding[0] == 'embedding':
+                    if embedding == 'embedding':
                         aseq = model.amino_embed(aseq)
                         dseq = model.dna_embed(dseq)
 

@@ -71,5 +71,5 @@ less ../GCF_000001405.39/annotations/GCF_000001405.39_genomic_refseq.gff | awk '
 less ../GCF_000001405.39/annotations/GCF_000001405.39_genomic_refseq.gff | awk 'BEGIN{FS = "\t"} $3 == "CDS" {print substr($9, index($9,";gene=")+6, index($9, ";partial=")-index($9,";gene=")-6), "\t", substr($9, index($9, ";protein_id=")+12) }'| sed 's/;.*//' | uniq >> gene_proteinid.txt
 less ../GCF_000001405.39/annotations/GCF_000001405.39_genomic_refseq.gff | awk 'BEGIN{FS = "\t"} $3 == "CDS" {print substr($9, index($9,";gene=")+6, index($9, ";pseudo=")-index($9,";gene=")-6), "\t", substr($9, index($9, ";protein_id=")+12) }'| sed 's/;.*//' | uniq >> gene_proteinid.txt
 less gene_proteinid.txt | awk '{if(NF > 1) {print $0}}' | sort | uniq > gene_proteinid2.txt
-rm gene_proteinid
-mv gene_proteinid2 gene_proteinid
+rm gene_proteinid.txt
+mv gene_proteinid2.txt gene_proteinid.txt

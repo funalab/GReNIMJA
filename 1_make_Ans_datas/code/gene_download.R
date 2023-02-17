@@ -1,17 +1,21 @@
 # START : Dependency Check
-requiredPackage <- c("biomartr")
+requiredPackage <- c("BiocManager", "biomartr")
 requiredPackage_BC <- c("biomaRt","Biostrings")
+
+for( p in requiredPackage ){
+  if( !(p %in% installed.packages())){
+    install.packages( p )
+  }
+}
+
+library(BiocManager)
 
 for( p in requiredPackage_BC ){
   if( !( p %in% installed.packages( ))){
     BiocManager::install( p )
   }
 }
-for( p in requiredPackage ){
-  if( !(p %in% installed.packages())){
-    install.packages( p )
-  }
-}
+
 
 # EDN : Dependency Check
 
@@ -32,7 +36,7 @@ for( acc in assembly_accession ){
     ## Following will be replaced to biomartr::getCollection function.
     ## Currently the code of biomartr::getCollection may contain bug and I have already reported it to developer
     ## ISSUE : https://github.com/ropensci/biomartr/issues/53
-    biomartr::getGenome( db = db , organism = acc , path = file.path( save_dir , "genomes")) ## Scaffold or Contig Download
+    biomartr::getGenome( db = db , organism = acc , path = file.path( save_dir , "genomes"), reference = FALSE) ## Scaffold or Contig Download
     biomartr::getCDS(  db = db , organism = acc , path = file.path( save_dir , "CDSs") ) # CDS Download
     biomartr::getRNA( db = db , organism = acc , path = file.path( save_dir , "RNA")) # RNA Download
     biomartr::getProteome( db = db , organism = acc , path = file.path( save_dir , "proteomes")) # Protein sequence Download

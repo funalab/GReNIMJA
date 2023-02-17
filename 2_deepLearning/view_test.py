@@ -4,9 +4,7 @@ from func import NewsDataset, ans_one_hot, attention_view, pad_collate
 from torch.utils.data import DataLoader
 
 
-def test_model(vector, test_datasets, batch_size, model, test_num, device, test_tf, test_ta, view, embedding, dir, att,
-               stride, mer, amino_stride, amino_mer, map, epoch, Occulusion, test):
-
+def test_model(vector, test_datasets, batch_size, model, test_num, device, test_tf, test_ta, view, embedding, dir, att, stride, mer, amino_stride, amino_mer, map, epoch):
     with torch.no_grad():
         test_TRUE = 0
         TP, FP, FN, TN = 0, 0, 0, 0
@@ -16,11 +14,6 @@ def test_model(vector, test_datasets, batch_size, model, test_num, device, test_
         for aseqs, dseqs, ansss in test_datasets:
             ansss = ans_one_hot(ansss)
             amino_hoge, dna_hoge = vector.convert_vector(aseqs, dseqs)
-            if Occulusion:
-                a = ansss
-                for i in range(len(amino_hoge)):
-                    ansss = torch.cat([ansss, a])
-                batch_size = len(amino_hoge)
             dataset_test = NewsDataset(amino_hoge, dna_hoge, ansss)
             test_dataset = DataLoader(dataset=dataset_test, batch_size=batch_size, drop_last=True, collate_fn=pad_collate)
             for aseq, dseq, ans in test_dataset:
@@ -38,7 +31,7 @@ def test_model(vector, test_datasets, batch_size, model, test_num, device, test_
                     dseq = dseq.to(device)
                     ans = ans.to(device)
 
-                if embedding[0] == 'embedding':
+                if embedding == 'embedding':
                     aseq = model.amino_embed(aseq)
                     dseq = model.dna_embed(dseq)
                 aminos, amino_att = model.amino_forward(aseq)
@@ -94,28 +87,14 @@ def test_model(vector, test_datasets, batch_size, model, test_num, device, test_
                 test_TRUE += TRUE
                 num += 1
 
-        if Occulusion:
-            cat_attn = vector.view_Occulusion(score, test['tf_seq'][0], test['ta_seq'][0], test_tf, test_ta, ans, dir, pre)
-
-        try:
-            Precision = TP / (TP + FP)
-        except:
-            Precision = 0
-        try:
-            Recall = TP / (TP + FN)
-        except:
-            Recall = 0
-        try:
-            F_measure = 2 * Recall * Precision / (Recall + Precision)
-        except:
-            F_measure = 0
+        Precision = TP / (TP + FP)
+        Recall = TP / (TP + FN)
+        F_measure = 2 * Recall * Precision / (Recall + Precision)
 
         test_accuracy = test_TRUE / test_num
         print("test_accuracy", test_accuracy)
         print("TP", TP, "\t", "FP", FP, "\t", "FN", FN, "\t", "TN", TN, "\t", "Recall", Recall, "\t", "Precision", Precision, "\t", "F_measure", F_measure)
         write_list = [str(epoch), str(test_accuracy), str(TP), str(FP), str(FN), str(TN), str(Recall), str(Precision), str(F_measure)]
-        if Occulusion:
-            return cat_attn
         if view == "FALSE":
             f = open(dir + 'Details/testresult.txt', 'a')
             f.write('\t'.join(write_list))

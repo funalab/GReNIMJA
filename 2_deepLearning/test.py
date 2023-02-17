@@ -13,7 +13,6 @@ from torch.utils.data import DataLoader
 import os
 from gensim.models.word2vec import Word2Vec
 from Dataloadar import test_dataLoad
-from makeData import make_oneHot
 
 
 class Calculation:
@@ -83,7 +82,7 @@ class Calculation:
 
     def calc(self):
         unq = np.array([x + 2 * y for x, y in zip(self.pres, self.answers)])
-        cm = confusion_matrix(self.answers, self.pres)
+        cm = confusion_matrix(self.pres, self.answers)
         TN, FP, FN, TP = cm.flatten()
         TPs = np.array(np.where(unq == 3)).tolist()[0]
         FPs = np.array(np.where(unq == 1)).tolist()[0]
@@ -93,7 +92,7 @@ class Calculation:
         Recall = TP / (TP + FN)
         F_measure = 2 * Recall * Precision / (Recall + Precision)
         # 全体のACC, AUROC, AUPRを計算する
-        test_accuracy = accuracy_score(self.answers, self.pres)
+        test_accuracy = accuracy_score(self.pres, self.answers)
         auroc = self.AUROC()
         aupr = self.AUPR()
 
@@ -151,7 +150,7 @@ def test_model(vector, test_datasets, batch_size, model, test_num, device, embed
                 dseq = dseq.to(device)
                 ans = ans.to(device)
 
-                if embedding[0] == 'embedding':
+                if embedding == 'embedding':
                     aseq = model.amino_embed(aseq)
                     dseq = model.dna_embed(dseq)
 
@@ -180,14 +179,14 @@ def test_model(vector, test_datasets, batch_size, model, test_num, device, embed
 
 
 def main():
-    check_dir = './checkpoint/3checkpoint/'
+    check_dir = './checkpoint/1checkpoint/'
     # どのモデルを読み込むか
-    check = 'checkpoint75.pt'
-    os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+    check = 'checkpoint96.pt'
+    os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
     # device
-    device = torch.device('cpu')
-    device2 = 'cpu'
+    device = torch.device('cuda')
+    device2 = 'cuda'
 
     species = 'human'
 
@@ -199,33 +198,14 @@ def main():
     choice = False
 
     # model
-    filename = '../data/ans.pickle'
-    # model
-    embedding = ['one_hot']
-    if embedding[0] == 'one_hot':
-        a_embedding = 0  # 0: onehot
-        d_embedding = 1  # 0: onehot, 1: all, 2: onehot+NCP, 3:onehot+DPCP, 4: NCP, 5: DPCP, 6: NCP+DPCP
-        embedding = [a_embedding, d_embedding]
-        amino_emb_dim = 0
-        dna_emb_dim = 0
-        if d_embedding in [0, 1, 2, 3]:
-            amino_emb_dim += 20
-            dna_emb_dim += 4
-
-        if d_embedding in [1, 2, 4, 6]:
-            dna_emb_dim += 3
-
-        if d_embedding in [1, 3, 5, 6]:
-            dna_emb_dim += 6
-
-    if embedding[0] == 'embedding':
-        stride = 1
-        amino_stride = 1
-        mer = 5
-        amino_mer = 4
-        amino_emb_dim = 100
-        dna_emb_dim = 50
-        emb_num = 'all'
+    embedding = 'embedding'
+    stride = 1
+    amino_stride = 1
+    mer = 5
+    amino_mer = 4
+    amino_emb_dim = 100
+    dna_emb_dim = 50
+    # embedding = 'one_hot'
     learn = 'TRUE'
     pre = 'TRUE'
     emb_num = 'all'
@@ -235,9 +215,9 @@ def main():
 
     CNN = True
     if CNN:
-        a_kernel_Xlen = 26
+        a_kernel_Xlen = 30
         a_kernel_Ylen = amino_emb_dim
-        d_kernel_Xlen = 26
+        d_kernel_Xlen = 18
         d_kernel_Ylen = dna_emb_dim
         a_kernel_size = (a_kernel_Xlen, a_kernel_Ylen)
         d_kernel_size = (d_kernel_Xlen, d_kernel_Ylen)
@@ -245,14 +225,14 @@ def main():
         a_kernel_stride = (4, 1)
         d_kernel_stride = (4, 1)
         kernel_stride = [a_kernel_stride, d_kernel_stride]
-        a_output_channel = 160
-        d_output_channel = 160
+        a_output_channel = 300
+        d_output_channel = 260
         output_channel = [a_output_channel, d_output_channel]
-        a_max_pool_len = 13
-        d_max_pool_len = 13
+        a_max_pool_len = 15
+        d_max_pool_len = 15
         max_pool_len = [a_max_pool_len, d_max_pool_len]
-        a_CNN_D = 0
-        d_CNN_D = 0
+        a_CNN_D = 0.458280
+        d_CNN_D = 0.074344
 
     biLSTM = False
     if biLSTM:
@@ -267,7 +247,7 @@ def main():
     # fusion='NULL': a_hiddendim=d_hiddendim, co_hiddendim = 2*a_hiddendim
     fusion = 2  # 0:1linear(aminoを寄せる) or 1:1linear(dnaを寄せる) or 2:2linear or 3:3linear or False
     if fusion in [0, 1, 2, 3]:
-        co_hiddendim = 100
+        co_hiddendim = 190
     if fusion in [3]:
         co_hiddendim2 = 50
 
@@ -282,13 +262,13 @@ def main():
         conv_num = 10  # 1×1 convolutionのchannel数
 
     if att == '2DLSTM' or att == 'LSTM':
-        rnn2d_dim = 200
+        rnn2d_dim = 190
         cat_rnn = 'lstm'  # lstm or gru
-        LSTM2D_D = 0
+        LSTM2D_D = 0.136456
     rnn = [a_rnn, d_rnn, cat_rnn]
 
     # NNの2層目の中間層の次元
-    linear2_inputDim = 50
+    linear2_inputDim = 140
 
     # Dropout
     Dense_D1 = 0
@@ -297,26 +277,24 @@ def main():
 
     view = 'FALSE'  # Attention mapを可視化するか
 
-    if embedding[0] == 'embedding':
-        # filename
-        if emb_num == 'all':
-            amino_dict = '../embedding/all_vector/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
-                         '_' + str(amino_stride) + '_amino_dict.pickle'
-            dna_dict = '../embedding/all_vector/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(
-                stride) + '_Dna2vec_dict.pickle'
-            amino_preVec = '../embedding/all_vector/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
-                           '_' + str(amino_stride) + '_Aword2vec.gensim.model'
-            dna_preVec = '../embedding/all_vector/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(
-                stride) + '_Dna2vec.pickle'
+    # filename
+    if emb_num == 'all':
+        amino_dict = '../embedding/all_vector/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
+                     '_' + str(amino_stride) + '_amino_dict.pickle'
+        dna_dict = '../embedding/all_vector/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(
+            stride) + '_Dna2vec_dict.pickle'
+        amino_preVec = '../embedding/all_vector/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
+                       '_' + str(amino_stride) + '_Aword2vec.gensim.model'
+        dna_preVec = '../embedding/all_vector/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(
+            stride) + '_Dna2vec.pickle'
 
-        else:
-            amino_dict = '../embedding/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
-                         '_' + str(amino_stride) + '_amino_dict.pickle'
-            dna_dict = '../embedding/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_dna_dict.pickle'
-            amino_preVec = '../embedding/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
-                           '_' + str(amino_stride) + '_Aword2vec.gensim.model'
-            dna_preVec = '../embedding/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(
-                stride) + '_Dword2vec.gensim.model'
+    else:
+        amino_dict = '../embedding/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
+                     '_' + str(amino_stride) + '_amino_dict.pickle'
+        dna_dict = '../embedding/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_dna_dict.pickle'
+        amino_preVec = '../embedding/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
+                       '_' + str(amino_stride) + '_Aword2vec.gensim.model'
+        dna_preVec = '../embedding/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_Dword2vec.gensim.model'
 
     if device2 == 'cpu':
         ## パラメータの設定 ##
@@ -339,32 +317,20 @@ def main():
     # 値の初期化
     amino_weights, dna_weights, Avocab_size, Dvocab_size, emb_dim = 0, 0, 0, 0, 0
 
-    if len(embedding) > 1:
-        if embedding[0] in [0]:
-            amino = {'A': 0, 'C': 1, 'D': 2, 'E': 3, 'F': 4, 'G': 5, 'H': 6, 'I': 7, 'K': 8, 'L': 9, 'M': 10, 'N': 11,
-                     'P': 12, 'Q': 13, 'R': 14, 'S': 15, 'T': 16, 'V': 17, 'W': 18, 'Y': 19}
-            if not os.path.isfile(
-                    '../data/' + str(data_dir) + '/dict/' + str(species) + '_' + str(embedding[0]) + 'Aonehot.pickle'):
-                make_oneHot(filename, species)
-            with open('../data/pickle/dict/' + str(species) + '_' + str(embedding[0]) + 'Aonehot.pickle', 'rb') as f:
-                amino_dict = pickle.load(f)
+    ## モデルの定義 ##
+    if embedding == 'one_hot':
+        amino = {'M': 0, 'L': 1, 'K': 2, 'F': 3, 'A': 4, 'Q': 5, 'E': 6, 'T': 7, 'P': 8, 'V': 9, 'N': 10, 'G': 11,
+                 'S': 12,
+                 'R': 13, 'I': 14, 'D': 15, 'Y': 16, 'C': 17, 'H': 18, 'W': 19}
+        dna = {'G': 0, 'C': 1, 'T': 2, 'A': 3}
+        ans = {'0': 0, '1': 1}
+        vector = convert(amino, dna, ans)
+        # アミノ酸配列の種類数
+        A_emb_dim = 20
+        # 塩基配列の種類数
+        D_emb_dim = 4
 
-        if embedding[1] in [0, 1, 2, 3, 4, 5, 6]:
-            dna = {'A': 0, 'C': 1, 'G': 2, 'T': 3}
-            ans = {'0': 0, '1': 1}
-            if not os.path.isfile(
-                    '../data/' + str(data_dir) + '/dict/' + str(species) + '_' + str(embedding[1]) + 'Donehot.pickle'):
-                make_oneHot(filename, species)
-            with open('../data/pickle/dict/' + str(species) + '_' + str(embedding[1]) + 'Donehot.pickle', 'rb') as f:
-                dna_dict = pickle.load(f)
-
-            vector = convert(amino_dict, dna_dict)
-            # アミノ酸配列の種類数
-            A_emb_dim = amino_emb_dim
-            # 塩基配列の種類数
-            D_emb_dim = dna_emb_dim
-
-    if embedding[0] == 'embedding':
+    if embedding == 'embedding':
         with open(amino_dict, 'rb') as f:
             amino_dict = pickle.load(f)
         with open(dna_dict, 'rb') as f:
@@ -416,7 +382,7 @@ def main():
     # test
     model.to(device)
 
-    test, test_dataset, test_iter = test_dataLoad(short, bp, data_dir, batch_size, species, amino_dict, dna_dict)
+    test, test_dataset, test_iter = test_dataLoad(short, bp, data_dir, batch_size, species)
 
     # balanceDNA.txtに羅列されたTFのみでテストを行う
     if choice:

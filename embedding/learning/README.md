@@ -28,3 +28,4 @@ less ./learn_dna/dna2vec/results/[dna2vecの出力ファイル名] | awk 'BEGIN{
 python make_dnaVec.py
 ```
 
+ここまでで作成できた事前学習済みベクトルは../all_vectorに格納してある。

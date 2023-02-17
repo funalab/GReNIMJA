@@ -5,6 +5,10 @@
 R --no-save < ./code/gene_download.R
 find ./ -type f -name "*.gz" -exec gunzip {} \; 
 ```
+※注意　本研究時はGCF_000001405.39が最新であったため、GCF_000001405.39のゲノム情報を取得していました。
+しかし、最新版のゲノムじゃないと、gene_download.Rは機能しないため、最新版のゲノムを取ってくる場合はgene_download.Rの28行目を書き換えてください。
+それに伴いget_chr.R, get_seq.R, get_longest_seq.R の最初のGCF*を書き換える必要があります。
+本研究で用いたGCF_00001505.3はすでにディレクトリ内に用意してあるので、このゲノム情報を用いてデータセットを作成する場合はこの行程は飛ばし、以下の2番より実行してください。
 
 
 2. dorotheaからデータの取得と解凍
@@ -26,13 +30,13 @@ gunzip gene_attribute_edges.txt.gz
 
 ```
 cd ./gene_gff
-zsh gene_gff.sh  # Synonymsをまとめる ここでgene_gff.sh内に書かれている操作をする必要があるが面倒なので推奨しない。
+zsh gene_gff.sh  # Synonymsをまとめる ここでgene_gff.sh内に書かれている操作をする必要があるが面倒なので推奨しない。最初の二つのコマンドと最後の7行のみ実行することを推奨。
 cd ../
 ```
 
 5. 対応表を作成する（ここから下は以下を実行することで自動で最後まで実行できる）
 ```
-zsh matome.sh
+zsh matome.sh [dorotheaのファイル名の下7桁]
 ```
 
 # 一つずつ実行するなら以下の通りに実行する

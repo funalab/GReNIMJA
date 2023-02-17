@@ -191,7 +191,7 @@ renameTA <- renameTA[renameTA$name != renameTA$rename,]
 
 
 cut_dataframe <- cut_gene(renameTF, renameTA)  # gene cut
-#write.table(dataframe, file = './cut.txt', sep = "\t", append=F, quote=F, row.names = FALSE)  # cutした結果を出力
+write.table(dataframe, file = './cut.txt', sep = "\t", append=F, quote=F, row.names = FALSE)  # cutした結果を出力
 # Create answer data after deleting data below the set confidence assignment level.
 dataframe <- make_ans_data(level)  # dorotheaの正解データを作成
 

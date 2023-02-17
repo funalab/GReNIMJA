@@ -8,8 +8,8 @@
 TF_file = "../rename_tf"
 gene_protein_file = "../gene_gff/longestGene_proteinid.txt"
 protein_seq_file = "../GCF_000001405.39/proteomes/GCF_000001405.39_protein_refseq.faa"
-TF_list = "./cpuTF"
-outfile = "./cpuTF_group"
+TF_list = "./TF"
+outfile = "./TF_group"
 TF_bunpu = "TF_bunpu"
 
 cut_group <- 50

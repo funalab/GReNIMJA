@@ -33,21 +33,22 @@ def objective(trial):
     fusion = 2
     att = '2DLSTM'
 
-    a_kernel_Xlen, d_kernel_Xlen, a_kernel_strideX, d_kernel_strideX, a_output_channel, d_output_channel, \
-    a_max_pool_len, d_max_pool_len, a_rnn, d_rnn, a_hiddendim, d_hiddendim, co_hiddendim, co_hiddendim2, DA, R, \
-    cnn1_1, conv_num, rnn2d_dim, cat_rnn, a_CNN_D, d_CNN_D, a_biLSTM_D, d_biLSTM_D, LSTM2D_D, cos, output_num = initialize()
+    a_kernel_Xlen, d_kernel_strideX, \
+    a_rnn, d_rnn, a_hiddendim, d_hiddendim, co_hiddendim, co_hiddendim2, DA, R, \
+    cnn1_1, conv_num, rnn2d_dim, cat_rnn, max_pool_len, output_channel, a_CNN_D, d_CNN_D, a_biLSTM_D, d_biLSTM_D, LSTM2D_D = initialize()
+    output_num = 0
 
     if CNN:
-        a_kernel_Xlen = trial.suggest_int('a_kernelLen', 10, 32, 2)
-        d_kernel_Xlen = trial.suggest_int('d_kernelLen', 10, 32, 2)
-        a_kernel_strideX = trial.suggest_int('a_stride', 3, 6, 1)
-        d_kernel_strideX = trial.suggest_int('d_stride', 3, 6, 1)
+        a_kernel_Xlen = trial.suggest_int('a_kernelLen', 10, 30, 2)
+        d_kernel_Xlen = trial.suggest_int('d_kernelLen', 10, 30, 2)
+        a_kernel_strideX = trial.suggest_int('a_stride', 4, 6, 1)
+        d_kernel_strideX = trial.suggest_int('d_stride', 4, 6, 1)
         a_output_channel = trial.suggest_int('a_channel', 80, 320, 20)
         d_output_channel = trial.suggest_int('d_channel', 80, 320, 20)
-        a_max_pool_len = trial.suggest_int('a_maxPool', 5, 20, 1)
-        d_max_pool_len = trial.suggest_int('a_maxPool', 5, 20, 1)
-        a_CNN_D = trial.suggest_uniform('a_CNN_Drate', 0.0, 0.8)
-        d_CNN_D = trial.suggest_uniform('d_CNN_Drate', 0.0, 0.8)
+        a_max_pool_len = trial.suggest_int('a_maxPool', 12, 16, 1)
+        d_max_pool_len = trial.suggest_int('a_maxPool', 12, 16, 1)
+        a_CNN_D = trial.suggest_uniform('a_CNN_Drate', 0.0, 0.5)
+        d_CNN_D = trial.suggest_uniform('d_CNN_Drate', 0.0, 0.5)
 
     if biLSTM:
         a_rnn = trial.suggest_categorical('a_rnn', ['lstm', 'gru'])
@@ -66,25 +67,25 @@ def objective(trial):
             co_hiddendim2 = trial.suggest_int('co_hiddendim2', 30, 100, 10)
 
     if att == 'mean' or att == 'add' or att == '2DLSTM' or att == 'RNN':
-        cos = trial.suggest_int('cos', 0, 1)
+        cos = 1
 
     if att == 'att':
         # Attention
         DA = trial.suggest_int('DA', 10, 100, 10)
 
     if att == '2DLSTM' or att == 'LSTM':
-        rnn2d_dim = trial.suggest_int('rnn2d_dim', 30, 300, 10)
-        LSTM2D_D = trial.suggest_uniform('LSTM2D_Drate', 0.0, 0.8)
+        rnn2d_dim = trial.suggest_int('rnn2d_dim', 50, 300, 10)
+        LSTM2D_D = trial.suggest_uniform('LSTM2D_Drate', 0.0, 0.5)
 
     # NNの2層目の中間層の次元
-    linear2_inputDim = trial.suggest_int('linear2_inputDim', 10, 200, 10)
+    linear2_inputDim = trial.suggest_int('linear2_inputDim', 30, 200, 10)
 
     # Dropout
-    Dense_D1 = trial.suggest_uniform('Dense_D1rate', 0.0, 0.8)
-    Dense_D2 = trial.suggest_uniform('Dense_D2rate', 0.0, 0.8)
+    Dense_D1 = 0.0
+    Dense_D2 = 0.0
 
     # Int parameter
-    bp = trial.suggest_int('bp', 400, 1000, 100)
+    bp = 1000
 
     #amino_mer = trial.suggest_int('A_mer', 3, 6)
     #mer = trial.suggest_int('D_mer', 3, 6)
@@ -102,11 +103,11 @@ def objective(trial):
     ##############################################
 
     # device
-    os.environ['CUDA_VISIBLE_DEVICES'] = '3'
+    os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
     # device
-    device = torch.device('cpu')
-    device2 = 'cpu'
+    device = torch.device('cuda')
+    device2 = 'cuda'
 
     # initial state
     check = './checkpoint/init_checkpoint.pt'
@@ -234,8 +235,8 @@ def objective(trial):
         filename = '../data/ans.pickle'
         miss_datafile = '../data/2D_miss.pickle'
         TF_bunpu = '../data/TF_bunpu'
-        train_batchsize = 128
-        valid_batchsize = 128
+        train_batchsize = 1024
+        valid_batchsize = 512
         ####################
 
     os.makedirs('./result', exist_ok=True)
@@ -365,7 +366,10 @@ def objective(trial):
                                                                                   epoch_num, iter, device, embedding,
                                                                                   epoch, sigopt, i)
 
-    max_value = max(valid_accuracies)
+    try:
+        max_value = valid_losses[24]
+    except:
+        max_value = valid_losses[-1]
     '''
     max_index = valid_accuracies.index(max_value)
     # min_value = min(valid_losses)
@@ -442,7 +446,7 @@ def main():
                                       storage='sqlite:///./optuna_study.db',
                                       load_if_exists=True)
     # 最適化の実行
-    study.optimize(objective, n_trials=10)
+    study.optimize(objective, n_trials=40)
 
     # 最適化結果の確認
     dbname = "optuna_study.db"

@@ -20,7 +20,8 @@ class myModel(nn.Module):
         param = [a_hiddendim, d_hiddendim, co_hiddendim, co_hiddendim2, linear2_inputDim, rnn2d_dim, conv_num, D_p,
                  kernel_size, kernel_stride, output_channel, max_pool_len, DA, R]
         '''
-        if m_para[0][0] == 'embedding':
+
+        if m_para[0] == 'embedding':
             self.A_embeddings = nn.Embedding(Avocab_size, emb_dim[0], padding_idx=0)
             self.D_embeddings = nn.Embedding(Dvocab_size, emb_dim[1], padding_idx=0)
             self.pre = m_para[1]
@@ -172,18 +173,6 @@ class myModel(nn.Module):
         dna_vector = self.D_embeddings(dseq)
         return dna_vector
 
-    def amino_cnn(self, amino_vec):
-        amino_vec = torch.reshape(amino_vec, [-1, 1, amino_vec.size()[1], amino_vec.size()[2]])
-        amino_vec = self.a_conv(amino_vec)
-        amino_vec = amino_vec[:, :, :, 0]
-        return amino_vec
-
-    def dna_cnn(self, dna_vec):
-        dna_vec = torch.reshape(dna_vec, [-1, 1, dna_vec.size()[1], dna_vec.size()[2]])
-        dna_vec = self.d_conv(dna_vec)
-        dna_vec = dna_vec[:, :, :, 0]
-        return dna_vec
-
     # アミノ酸配列の順伝播処理
     def amino_forward(self, amino_vec):
         if self.CNN:
@@ -271,6 +260,8 @@ class myModel(nn.Module):
                     amino = self.A_fusion(amino)
                     amino = amino[:, :, :, 0]
                     amino = torch.transpose(amino, 1, 2)
+
+                 
                     '''
                     for a in range(amino.size()[1]):
                         tmp = self.Aco_linear(amino[:, a, :])
@@ -291,6 +282,8 @@ class myModel(nn.Module):
                     dna = self.D_fusion(dna)
                     dna = dna[:, :, :, 0]
                     dna = torch.transpose(dna, 1, 2)
+
+
                     '''
                     for d in range(dna.size()[1]):
                         tmp = self.Dco_linear(dna[:, d, :])
@@ -332,7 +325,7 @@ class myModel(nn.Module):
             if self.att == '2DLSTM':
                 feartures = self.lstm2D.forward(dna, amino)
                 feartures = self.LSTM2D_D(feartures)
-                '''
+                
                 f = feartures.to('cpu')
                 lines = []
                 for r in f:
@@ -341,7 +334,7 @@ class myModel(nn.Module):
                 f.write('\n'.join(lines))
                 f.write('\n')
                 f.close()
-                '''
+                
 
             else:  # mean or add or RNN
                 # アミノ酸の出力とDNAの出力との内積を求める(cos類似度の分子)
