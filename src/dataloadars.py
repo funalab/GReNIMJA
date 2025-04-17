@@ -80,16 +80,14 @@ def data_load(CV_para, short, bp, data_dir, K_i, batch_size):
     return train_dataset, valid_dataset, iter
 
 
-def test_dataLoad(short, bp, data_dir, batch_size, species):
+def test_dataLoad(short, bp, batch_size, species, dataset_path):
     test_batchsize = batch_size[2]
 
-    if species == 'mouse':
-        with open('../data/pickle/Dmouse_test.pickle', 'rb') as f:
+    if species == 'human':
+        with open(dataset_path, 'rb') as f:
             test = pickle.load(f)
-
     else:
-        with open('../data/pickle/test.pickle', 'rb') as f:
-            test = pickle.load(f)
+        raise NotImplementedError
             
 
     if short == 'TRUE':

@@ -1,0 +1,10 @@
+torch==2.4.1
+numpy==1.22.3
+scipy==1.8.0
+pandas==1.4.1
+gensim==4.1.2
+matplotlib==3.5.1
+seaborn==0.11.2
+scikit-learn==1.0.2
+optuna==2.10.0
+tqdm==4.64.0

@@ -1,7 +1,0 @@
-inputs: inputs/hg38/chr*.fa
-k-low: 5
-k-high: 5
-vec-dim: 50
-epoch: 10
-context: 10
-out-dir: results/

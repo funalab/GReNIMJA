@@ -211,16 +211,7 @@ class myModel(nn.Module):
             dna_vec = self.d_conv(dna_vec)
             max_index = torch.argmax(dna_vec, dim=2)
             max_index = torch.reshape(max_index, [-1, max_index.size()[1]])
-            '''
-            f = max_index.to('cpu')
-            lines = []
-            for r in f:
-                lines.append(str(r))
-            with open('./result/conv_output.txt', 'a') as f:
-                f.write('\n'.join(lines))
-                f.write('\n')
-                f.close()
-            '''
+
             dna_vec = self.ReLu(dna_vec)
             dna_vec = self.d_maxPlooing(dna_vec)
             dna_vec = self.d_CNN_Dropout(dna_vec)
@@ -246,7 +237,7 @@ class myModel(nn.Module):
             return dna_rnn_out, 0
 
     # アミノ酸配列とDNA配列の特徴量を統合し、再びRNNに入力する(相互作用の学習)
-    def Integration(self, amino, dna):
+    def Integration(self, amino, dna, save_path):
         sigmoid, amino_att, dna_attmap, dna_att = 0, 0, 0, 0
         if self.att == 'att' or self.att == False:
             feartures = torch.cat([amino, dna], dim=1)  # feartures.size() = torch.Size([batch_size, 2 * hidden_dim])
@@ -261,21 +252,7 @@ class myModel(nn.Module):
                     amino = amino[:, :, :, 0]
                     amino = torch.transpose(amino, 1, 2)
 
-                 
-                    '''
-                    for a in range(amino.size()[1]):
-                        tmp = self.Aco_linear(amino[:, a, :])
-                        if self.fusion == 3:
-                            tmp = self.co_linear(tmp)
-                            tmp = torch.reshape(tmp, [-1, 1, self.co_hiddendim2])
-                        if self.fusion in [4, 2]:
-                            tmp = torch.reshape(tmp, [-1, 1, self.co_hiddendim])
-                        if a == 0:
-                            tmps = tmp
-                        else:
-                            tmps = torch.cat((tmps, tmp), dim=1)
-                    amino = tmps
-                    '''
+
                 if self.fusion in [1, 2, 3]:
                     dna = torch.transpose(dna, 1, 2)
                     dna = dna.unsqueeze(3)
@@ -283,43 +260,10 @@ class myModel(nn.Module):
                     dna = dna[:, :, :, 0]
                     dna = torch.transpose(dna, 1, 2)
 
-
-                    '''
-                    for d in range(dna.size()[1]):
-                        tmp = self.Dco_linear(dna[:, d, :])
-                        if self.fusion == 3:
-                            tmp = self.co_linear(tmp)
-                            tmp = torch.reshape(tmp, [-1, 1, self.co_hiddendim2])
-                        if self.fusion in [1, 2]:
-                            tmp = torch.reshape(tmp, [-1, 1, self.co_hiddendim])
-                        if d == 0:
-                            tmps = tmp
-                        else:
-                            tmps = torch.cat((tmps, tmp), dim=1)
-                    dna = tmps
-                    '''
             a_size = amino.size()[1]
             d_size = dna.size()[1]
             feartures = torch.cat([amino, dna],
                                   dim=1)  # feartures.size() = torch.Size([batch_size, 2 * hidden_dim])
-            '''
-            f = feartures.to('cpu')
-
-            lines = []
-            print(f.size())
-            exit()
-            for r in f:
-                print(r)
-                for k in r:
-                    print(k)
-                    lines.append(str(k))
-            print(lines)
-            exit()
-            #f = open('result/before2DLSM_test_feature.txt', 'a')
-            #f.write('\n'.join(lines))
-            #f.write('\n')
-            #f.close()
-            '''
 
 
             if self.att == '2DLSTM':
@@ -330,7 +274,7 @@ class myModel(nn.Module):
                 lines = []
                 for r in f:
                     lines.append(str(r))
-                f = open('result/after2DLSM_test_feature.txt', 'a')
+                f = open(f'{save_path}/after2DLSM_test_feature.txt', 'a')
                 f.write('\n'.join(lines))
                 f.write('\n')
                 f.close()
@@ -398,16 +342,7 @@ class myModel(nn.Module):
                 dna = (torch.mul(dna, dna_att)).sum(dim=1)
                 feartures = torch.cat([amino, dna],
                                       dim=1)  # feartures.size() = torch.Size([batch_size, 2 * hidden_dim])
-                '''
-                f = feartures.to('cpu')
-                lines = []
-                for r in f:
-                    lines.append(str(r))
-                f = open('result/human_train_feature.txt', 'a')
-                f.write('\n'.join(lines))
-                f.write('\n')
-                f.close()
-                '''
+
 
         sigmoid_input = self.linear1(feartures)
         sigmoid_input = self.ReLu(sigmoid_input)
@@ -415,16 +350,6 @@ class myModel(nn.Module):
         sigmoid_input = self.linear2(sigmoid_input)
         sigmoid_input = self.Dense_D2(sigmoid_input)
 
-        '''
-        f = sigmoid_input.to('cpu')
-        lines = []
-        for r in f:
-            lines.append(str(r))
-        f = open('result/after_Dense_test_feature.txt', 'a')
-        f.write('\n'.join(lines))
-        f.write('\n')
-        f.close()
-        '''
         # sigmoid_input = self.linear3(sigmoid_input)
         # sigmoid_input = self.dropout2(sigmoid_input)
         sigmoid = F.softmax(sigmoid_input, dim=1)

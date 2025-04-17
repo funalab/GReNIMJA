@@ -1,5 +1,6 @@
 # Mac OSX
 .DS_Store
+.idea
 
 # Emacs
 *~
@@ -7,21 +8,18 @@
 # data
 *_Data
 *.pickle
-GCF_000001405.39
-saezlab-dorothea-a814f45
-gene_attribute_edges.txt
-
+*.model
+*.npy
+*.tar.gz
 
 # result
 *.pt
-result
-
-# gomi
-gomi
-hinan
-test
 
 # other method
-gkmSVM
 dna2vec*
-other_method
+/venv/
+*tmp*
+/result*/
+/datasets/
+/embeddings/
+/models/
