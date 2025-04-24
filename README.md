@@ -1,6 +1,6 @@
 # GReNIMJA: Gene Regulatory Network Inference by Mixing and Jointing features of Amino acid and nucleotide sequences
 
-This is the code for [Mixing features of transcription factors and genes enables accurate prediction of gene regulation relationships for unknown transcription factors](https://fun.bio.keio.ac.jp/).
+This is the code for [Mixing features of transcription factors and genes enables accurate prediction of gene regulation relationships for unknown transcription factors](https://www.biorxiv.org/content/10.1101/2025.04.17.649264v1.article-metrics).
 This project is carried out in [Funahashi Lab. at Keio University](https://fun.bio.keio.ac.jp/).
 
 ## Overview
@@ -14,7 +14,7 @@ the presence or absence of regulatory relationships.
 
 ![proposed_architecture](raw/model_outline.png)
 
-The detailed information on this code is described in our paper published on [Mixing features of transcription factors and genes enables accurate prediction of gene regulation relationships for unknown transcription factors](https://fun.bio.keio.ac.jp/).
+The detailed information on this code is described in our paper published on [Mixing features of transcription factors and genes enables accurate prediction of gene regulation relationships for unknown transcription factors](https://www.biorxiv.org/content/10.1101/2025.04.17.649264v1.article-metrics).
 
 ## Requirements
 
