@@ -28,7 +28,7 @@ library( biomartr )
 # END : Library Installation
 
 # START : Downloading genome information for each species
-assembly_accession <- c("GCF_000001405.40") #GRCh38(2013/12/17)
+assembly_accession <- c("GCF_000001405.39") #GRCh38(2013/12/17)
 for( acc in assembly_accession ){
   # Setting the directory to store the genome data
      db <- "refseq"

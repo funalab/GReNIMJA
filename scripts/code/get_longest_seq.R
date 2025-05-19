@@ -10,7 +10,7 @@ library(seqinr)
 
 # input filename
 gene_protein_file = "./gene_gff/gene_proteinid.txt"
-protein_seq_file = "./GCF_000001405.40/proteomes/GCF_000001405.40_protein_refseq.faa"
+protein_seq_file = "./GCF_000001405.39/proteomes/GCF_000001405.39_protein_refseq.faa"
 # output filename
 outfile="./gene_gff/longestGene_proteinid.txt"
 

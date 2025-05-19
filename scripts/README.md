@@ -1,6 +1,6 @@
 
-1. Acquisition and deployment of human genome data
-
+1. Download and unzip human genome data
+<!--
 ```
 R --no-save < ./code/gene_download.R
 find ./ -type f -name "*.gz" -exec gunzip {} \; 
@@ -10,7 +10,8 @@ so we obtained the genome information from ```GCF_000001405.39```.
 However, ```./code/gene_download.R``` does not work with the above version at now, 
 so we modified the ```./code/gene_download.R``` to download ```GCF_000001405.40```.
 Additionally, we modified the relevant files in ```./code/get_chr.R```, ```./code/get_seq.R```, 
-```./code/get_longest_seq.R```, and ```./gene_gff/gene_gff.sh```.
+```./code/get_longest_seq.R```, and ```./_gene_gff/gene_gff.sh```.
+-->
 
 2. Download and unzip data from dorothea  
 Download from https://api.github.com/repos/saezlab/dorothea/tarball/HEAD.
@@ -27,22 +28,21 @@ curl -O https://maayanlab.cloud/static/hdfs/harmonizome/data/encodetfppi/gene_at
 gunzip gene_attribute_edges.txt.gz
 ```
 
-4. Map gene names in the database to NCBI gene names
+4. Map gene names in the database to NCBI gene names  
 
-```
-cd ./gene_gff
-zsh gene_gff.sh
-cd ../
-```
+In this repository, post-processing has already been performed and the files have been shared under ```./gene_gff/synonym```, 
+so we recommend skipping this step. If you are interested in the mapping operation, 
+please execute the following command``` cd ./_gene_gff && zsh gene_gff.sh && cd ../ ```. 
+You will need to manually delete lines with duplicate gene names.
 
-5. Create a mapping table  
-the following commands will automatically execute the rest of the process
+
+5. Create a mapping table
 ```
-zsh matome.sh dorothea
+zsh matome.sh [last 7 digits of dorothea file name]
 ```
 If executing one by one, execute as follows
 ```
-Rscript ./code/rename.R dorothea 
+Rscript ./code/rename.R [last 7 digits of dorothea file name]
 
 # Delete “ZNF286B” from rename_tf (because it is a pseudogene with no CDS)
 less rename_tf | grep -v “ZNF286B” > rename_tf2

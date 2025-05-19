@@ -20,7 +20,7 @@ renameTarget = "./rename_ta"
 # スプライシングヴァリアントのうち最長の配列のみを利用する場合
 gene_protein_file = "./gene_gff/longestGene_proteinid.txt"
 
-protein_seq_file = "./GCF_000001405.40/proteomes/GCF_000001405.40_protein_refseq.faa"
+protein_seq_file = "./GCF_000001405.39/proteomes/GCF_000001405.39_protein_refseq.faa"
 gene_seq_file = "./gene_gff/upstream_10000bp"
 
 TF_outfile = "TF_seq"
