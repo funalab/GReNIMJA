@@ -1,5 +1,5 @@
 # Extract the gene position of each gene
-less ../GCF_000001405.40/annotations/GCF_000001405.40_genomic_refseq.gff.gz | grep ";gene=.*;" | awk 'BEGIN{FS="\t"} $3 ~/gene/ {print $0}' >! tmp1
+less ../GCF_000001405.40/annotations/GCF_000001405.40_genomic_refseq.gff | grep ";gene=.*;" | awk 'BEGIN{FS="\t"} $3 ~/gene/ {print $0}' >! tmp1
 
 # > Gene name strand
 # Chromosome Start End

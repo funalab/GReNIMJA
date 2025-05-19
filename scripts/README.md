@@ -3,7 +3,7 @@
 
 ```
 R --no-save < ./code/gene_download.R
-find ./ -type f -name “*.gz” -exec gunzip {} \; 
+find ./ -type f -name "*.gz" -exec gunzip {} \; 
 ```
 Note: At the time of this study, ```GCF_000001405.39``` was the latest version, 
 so we obtained the genome information from ```GCF_000001405.39```.
