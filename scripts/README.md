@@ -18,15 +18,16 @@ Additionally, we modified the relevant files in ```./code/get_chr.R```, ```./cod
 ```./code/get_longest_seq.R```, and ```./_gene_gff/gene_gff.sh```.
 -->
 
-2. Download and unzip data from dorothea  
+2. Download and unzip data from ```dorothea```
 Download from https://api.github.com/repos/saezlab/dorothea/tarball/HEAD.
 
 ```
 curl --output dorothea.tar.gz "https://codeload.github.com/saezlab/dorothea/legacy.tar.gz/HEAD"
 tar -zxvf dorothea.tar.gz
 ```
+Make a note of the last 7 digits of ```dorothea``` file name, as you will need them later.
 
-3. Download and unzip data from ENCODE
+3. Download and unzip data from ```ENCODE```
 
 ```
 curl -O https://maayanlab.cloud/static/hdfs/harmonizome/data/encodetfppi/gene_attribute_edges.txt.gz
@@ -35,7 +36,8 @@ gunzip gene_attribute_edges.txt.gz
 
 4. Map gene names in the database to NCBI gene names  
 
-In this repository, post-processing has already been performed and the files have been shared under ```./gene_gff/synonym```, 
+In this repository, post-processing has already been performed and 
+the files have been shared under ```./gene_gff/synonym```, 
 so we recommend skipping this step. If you are interested in the mapping operation, 
 please execute the following command``` cd ./_gene_gff && zsh gene_gff.sh && cd ../ ```. 
 You will need to manually delete lines with duplicate gene names.
