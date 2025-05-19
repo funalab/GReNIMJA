@@ -21,9 +21,10 @@ Additionally, we modified the relevant files in ```./code/get_chr.R```, ```./cod
 ```./code/get_longest_seq.R```, and ```./_gene_gff/gene_gff.sh```.
 -->
 
-2. Download and unzip data from ```dorothea```
+2. Download and unzip data from ```dorothea```  
+<!--
 Download from https://api.github.com/repos/saezlab/dorothea/tarball/HEAD.
-
+-->
 ```
 curl --output dorothea.tar.gz "https://codeload.github.com/saezlab/dorothea/legacy.tar.gz/HEAD"
 tar -zxvf dorothea.tar.gz
