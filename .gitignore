@@ -23,7 +23,13 @@ dna2vec*
 /datasets/
 /embeddings/
 /models/
-/scripts/saezlab-dorothea-1461fb7/
+/scripts/saezlab-dorothea-*/
 /scripts/GCF_000001405.39/
 /scripts/gene_attribute_edges.txt
 /scripts/GCF_000001405.40/
+/scripts/_gene_gff/gene_edge.txt
+/scripts/_gene_gff/gene_extraction.txt
+/scripts/_gene_gff/gene_proteinid.txt
+/scripts/cut_gene
+/scripts/dorothea.tar
+/scripts/rename_tf

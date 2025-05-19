@@ -1,5 +1,10 @@
 
-1. Download and unzip human genome data
+1. Download and unzip human genome data (accession number: ```GCF_000001405.39```) from FTP server of NCBI
+```
+zsh ./genome/get_GCF_000001405.39.sh
+find ./ -type f -name "*.gz" -exec gunzip {} \; 
+```
+
 <!--
 ```
 R --no-save < ./code/gene_download.R
