@@ -1,5 +1,5 @@
 # Description
-Script for downloading raw data and formatting it for use as a dataset
+Scripts for downloading raw data and formatting it for use as a dataset
 
 # How to use
 1. Download and unzip human genome data (accession number: ```GCF_000001405.39```) from FTP server of NCBI
