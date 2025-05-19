@@ -7,9 +7,10 @@ find ./ -type f -name “*.gz” -exec gunzip {} \;
 ```
 Note: At the time of this study, ```GCF_000001405.39``` was the latest version, 
 so we obtained the genome information from ```GCF_000001405.39```.
-However, ```gene_download.R``` does not work with the above version at now, 
-so we modified the ```gene_download.R``` to download ```GCF_000001405.40```.
-Additionally, we modified the relevant files in ```get_chr.R```, ```get_seq.R```, and ```get_longest_seq.R```.
+However, ```./code/gene_download.R``` does not work with the above version at now, 
+so we modified the ```./code/gene_download.R``` to download ```GCF_000001405.40```.
+Additionally, we modified the relevant files in ```./code/get_chr.R```, ```./code/get_seq.R```, 
+```./code/get_longest_seq.R```, and ```./gene_gff/gene_gff.sh```.
 
 2. Download and unzip data from dorothea  
 Download from https://api.github.com/repos/saezlab/dorothea/tarball/HEAD.
@@ -34,8 +35,8 @@ zsh gene_gff.sh
 cd ../
 ```
 
-5. Create a mapping table
-the following commands will automatically execute the rest of the process)
+5. Create a mapping table  
+the following commands will automatically execute the rest of the process
 ```
 zsh matome.sh dorothea
 ```

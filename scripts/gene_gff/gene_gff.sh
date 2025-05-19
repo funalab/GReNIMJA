@@ -1,23 +1,23 @@
 # Extract the gene position of each gene
-less ../GCF_000001405.39/annotations/GCF_000001405.39_genomic_refseq.gff | grep “;gene=.*;” | awk 'BEGIN{FS = “\t”} $3 ~/gene/ {print $0}' >! tmp1
+less ../GCF_000001405.40/annotations/GCF_000001405.40_genomic_refseq.gff.gz | grep ";gene=.*;" | awk 'BEGIN{FS="\t"} $3 ~/gene/ {print $0}' >! tmp1
 
 # > Gene name strand
 # Chromosome Start End
 # Extract in this format
-less tmp1 | awk 'BEGIN{FS=“\t”} {print “>” substr($9, index($9,“;gene=”)+6, index($9, “;gene_biotype=”)-index($9,“;gene=”)-6) “\t” $7 “\n” $1 “\t” $4 “\t” $5}' >! gene_extraction.txt
+less tmp1 | awk 'BEGIN{FS="\t”} {print ">” substr($9, index($9,";gene=”)+6, index($9, ";gene_biotype=”)-index($9,";gene=”)-6) "\t” $7 "\n” $1 "\t” $4 "\t” $5}' >! gene_extraction.txt
 
 # Extract all aliases for genes
-less tmp1 | grep ";gene_synonym=" | awk 'BEGIN{FS=“\t”} {print substr($9, index($9,“;gene=”)+6, index($9, “;gene_biotype=”)-index($9,“;gene=”)-6) “,” substr($9, index($9, “;gene_synonym=”) +14)}' >! tmp2
+less tmp1 | grep ";gene_synonym=" | awk 'BEGIN{FS="\t”} {print substr($9, index($9,";gene=”)+6, index($9, ";gene_biotype=”)-index($9,";gene=”)-6) ",” substr($9, index($9, ";gene_synonym=”) +14)}' >! tmp2
 less tmp2 | sed 's/;.*//' > tmp3
 less tmp3 | sort | uniq > synonym
 
 # There are cases where there are two or more genes with the same name when synonyms are included. Therefore, for such genes, check the details of the genes in the database to determine which gene is which, and perform the following operation to delete the one that does not match from the file. This is tedious, so it is recommended to use the original file.
-# Delete “C2orf27B” from line 1997 of synonym (it is a paralog and not an alias) maru
-# Delete “DUSP27” from line 4782 maru
-# Delete “GGTA1P” from line 6571 maru
-# Delete “LINC00846” from line 22700 maru
-# Delete “LOR” from line 10221 maru
-# Delete “MPP6” from line 12500 maru
+# Delete "C2orf27B” from line 1997 of synonym (it is a paralog and not an alias) maru
+# Delete "DUSP27” from line 4782 maru
+# Delete "GGTA1P” from line 6571 maru
+# Delete "LINC00846” from line 22700 maru
+# Delete "LOR” from line 10221 maru
+# Delete "MPP6” from line 12500 maru
 # Delete lines 16984 and 16985 (RNA18SN4 and RNA18SN5 cannot be distinguished)
 Delete lines #16986 and #16987 (RNA28SN4 and RNA28SN5 cannot be distinguished)
 Delete ST2 from line #20194
@@ -66,10 +66,10 @@ Delete TRIM49D2P from line #23800
 rm tmp1 tmp2 tmp3
 
 
-less ../GCF_000001405.39/annotations/GCF_000001405.39_genomic_refseq.gff | awk 'BEGIN{FS = “\t”} $3 == “CDS” {print substr($9, index($9,“;gene=”)+6, index($9, “;product=”)-index($9,”; gene=")-6), ‘\t’, substr($9, index($9, ‘;protein_id=’)+12) }‘ | sed ’s/;.*//' | uniq > gene_proteinid.txt
-less ../GCF_000001405.39/annotations/GCF_000001405.39_genomic_refseq.gff | awk 'BEGIN{FS = “\t”} $3 == “CDS” {print substr($9, index($9,“;gene=”)+6, index($9, “;inference=”)-index($9,”; gene=")-6), ‘\t’, substr($9, index($9, ‘;protein_id=’)+12) }‘| sed ’s/;.*//' | uniq >> gene_proteinid.txt
-less ../GCF_000001405.39/annotations/GCF_000001405.39_genomic_refseq.gff | awk 'BEGIN{FS = “\t”} $3 == “CDS” {print substr($9, index($9,“;gene=”)+6, index($9, “;partial=”)-index($9,”; gene=")-6), ‘\t’, substr($9, index($9, ‘;protein_id=’)+12) }‘ | sed ’s/;.*//' | uniq >> gene_proteinid.txt
-less ../GCF_000001405.39/annotations/GCF_000001405.39_genomic_refseq.gff | awk 'BEGIN{FS = “\t”} $3 == “CDS” {print substr($9, index($9,”; gene=“)+6, index($9, ‘;pseudo=’)-index($9,”;gene=")-6), ‘\t’, substr($9, index($9, ‘;protein_id=’)+12) }‘| sed ’s/;.*//' | uniq >> gene_proteinid.txt
+less ../GCF_000001405.40/annotations/GCF_000001405.40_genomic_refseq.gff | awk 'BEGIN{FS = "\t”} $3 == "CDS” {print substr($9, index($9,";gene=”)+6, index($9, ";product=”)-index($9,”; gene=")-6), ‘\t’, substr($9, index($9, ‘;protein_id=’)+12) }‘ | sed ’s/;.*//' | uniq > gene_proteinid.txt
+less ../GCF_000001405.40/annotations/GCF_000001405.40_genomic_refseq.gff | awk 'BEGIN{FS = "\t”} $3 == "CDS” {print substr($9, index($9,";gene=”)+6, index($9, ";inference=”)-index($9,”; gene=")-6), ‘\t’, substr($9, index($9, ‘;protein_id=’)+12) }‘| sed ’s/;.*//' | uniq >> gene_proteinid.txt
+less ../GCF_000001405.40/annotations/GCF_000001405.40_genomic_refseq.gff | awk 'BEGIN{FS = "\t”} $3 == "CDS” {print substr($9, index($9,";gene=”)+6, index($9, ";partial=”)-index($9,”; gene=")-6), ‘\t’, substr($9, index($9, ‘;protein_id=’)+12) }‘ | sed ’s/;.*//' | uniq >> gene_proteinid.txt
+less ../GCF_000001405.40/annotations/GCF_000001405.40_genomic_refseq.gff | awk 'BEGIN{FS = "\t”} $3 == "CDS” {print substr($9, index($9,”; gene=")+6, index($9, ‘;pseudo=’)-index($9,”;gene=")-6), ‘\t’, substr($9, index($9, ‘;protein_id=’)+12) }‘| sed ’s/;.*//' | uniq >> gene_proteinid.txt
 less gene_proteinid.txt | awk '{if(NF > 1) {print $0}}' | sort | uniq > gene_proteinid2.txt
 rm gene_proteinid.txt
 mv gene_proteinid2.txt gene_proteinid.txt
