@@ -1,3 +1,6 @@
+# setting CRAN mirror
+options(repos = c(CRAN = "https://cran.rstudio.com/"))
+
 # START : Dependency Check
 requiredPackage <- c("BiocManager", "biomartr")
 requiredPackage_BC <- c("biomaRt","Biostrings")
@@ -25,7 +28,7 @@ library( biomartr )
 # END : Library Installation
 
 # START : Downloading genome information for each species
-assembly_accession <- c("GCF_000001405.39") #GRCh38(2013/12/17)
+assembly_accession <- c("GCF_000001405.40") #GRCh38(2013/12/17)
 for( acc in assembly_accession ){
   # Setting the directory to store the genome data
      db <- "refseq"
@@ -41,7 +44,7 @@ for( acc in assembly_accession ){
     biomartr::getRNA( db = db , organism = acc , path = file.path( save_dir , "RNA")) # RNA Download
     biomartr::getProteome( db = db , organism = acc , path = file.path( save_dir , "proteomes")) # Protein sequence Download
     biomartr::getGFF( db = db , organism = acc , path = file.path( save_dir , "annotations")) # GFF Download
-    biomartr::getAssemblyStats( db = db , organism = acc , path = file.path( save_dir , "genomeassembly_stats")) # Meta data Download
+    # biomartr::getAssemblyStats( db = db , organism = acc , path = file.path( save_dir , "genomeassembly_stats")) # Meta data Download
   }
   else{
     print( paste( save_dir , "already exists!"))

@@ -23,7 +23,7 @@ library(Biostrings)
 #inputfile = ""
 inputfile = "gene_edge.txt"
 gff_file="new_gene_edge.txt"
-genome_file="../GCF_000001405.39/genomes/GCF_000001405.39_genomic_refseq.fna"
+genome_file="../GCF_000001405.40/genomes/GCF_000001405.40_genomic_refseq.fna"
 
 # output filename
 out_edge_file= "new_gene_edge.txt"
