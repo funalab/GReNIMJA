@@ -2,12 +2,18 @@
 Scripts for downloading raw data and formatting it for use as a dataset
 
 # How to use
-1. Download and unzip human genome data (accession number: ```GCF_000001405.39```) from FTP server of NCBI
+
+If you want to execute all scripts at once, execute the following command. 
 ```
-zsh ./genome/get_GCF_000001405.39.sh
-find ./ -type f -name "*.gz" -exec gunzip {} \; 
+zsh ./build.sh
 ```
 
+If you want to execute them one by one, follow the instructions below.
+
+1. Download human genome data (accession number: ```GCF_000001405.39```) from FTP server of NCBI
+```
+zsh ./genome/get_GCF_000001405.39.sh
+```
 <!--
 ```
 R --no-save < ./code/gene_download.R
@@ -16,8 +22,8 @@ find ./ -type f -name "*.gz" -exec gunzip {} \;
 Note: At the time of this study, ```GCF_000001405.39``` was the latest version, 
 so we obtained the genome information from ```GCF_000001405.39```.
 However, ```./code/gene_download.R``` does not work with the above version at now, 
-so we modified the ```./code/gene_download.R``` to download ```GCF_000001405.40```.
-Additionally, we modified the relevant files in ```./code/get_chr.R```, ```./code/get_seq.R```, 
+so we need to modify the ```./code/gene_download.R``` to download ```GCF_000001405.40```.
+Additionally, we need to modify the relevant files in ```./code/get_chr.R```, ```./code/get_seq.R```, 
 ```./code/get_longest_seq.R```, and ```./_gene_gff/gene_gff.sh```.
 -->
 
@@ -49,7 +55,7 @@ You will need to manually delete lines with duplicate gene names.
 
 5. Create a mapping table
 ```
-zsh matome.sh [last 7 digits of dorothea file name]
+zsh mapping.sh [last 7 digits of dorothea file name]
 ```
 If executing one by one, execute as follows
 ```
