@@ -20,7 +20,7 @@ renameTarget = "./rename_ta"
 # スプライシングヴァリアントのうち最長の配列のみを利用する場合
 gene_protein_file = "./gene_gff/longestGene_proteinid.txt"
 
-protein_seq_file = "./GCF_000001405.39/proteomes/GCF_000001405.39_protein_refseq.faa"
+protein_seq_file = "./GCF_000001405.39/proteomes/GCF_000001405.39_GRCh38.p13_protein.faa"
 gene_seq_file = "./gene_gff/upstream_10000bp"
 
 TF_outfile = "TF_seq"
@@ -91,7 +91,7 @@ get_gene_seq <- function(w, ta_id, i){
 ######### main #########
 
 # データの読み込み
-data <- read.table(paste("../data/", inputfile, sep = ""))
+data <- read.table(paste("./data/", inputfile, sep = ""))
 colnames(data) <- c("confidence", "tf", "target", "label")
 
 rename_tf <- read.table(renameTF, header = T)
@@ -147,7 +147,7 @@ for (i in 1:nrow(data)){
     dseq <- sub("LIST", "", dseq)
   }
   result <- cbind(TF_name, seq, DNA_name, dseq, data[i,4], data[i,1])
-  write.table(result, paste("../data/", inputfile, "_seq", sep=""), quote = F, row.names = F, col.names = F, sep = "\t", append = T)
+  write.table(result, paste("./data/", inputfile, "_seq", sep=""), quote = F, row.names = F, col.names = F, sep = "\t", append = T)
 }
 
 #########################

@@ -62,7 +62,7 @@ make_ans_data <- function(lev){  # 設定した信頼レベル以下のデータ
   list <- c("confidence", "tf", "target") # dorothea_hsから抽出する列のリスト
   x <- dataframe[, list] # 抽出
   correct <- transform(x, label=numeric(nrow(dataframe))+1) # tfとtargetに正解ラベルである1だけの列を足す
-  write.table(correct, file = paste("../data/", ans_outfile, sep = ""), sep = "\t", append=F, quote=F, row.names = FALSE) # ファイル出力
+  write.table(correct, file = paste("./data/", ans_outfile, sep = ""), sep = "\t", append=F, quote=F, row.names = FALSE) # ファイル出力
   return(dataframe) 
 }
 
@@ -113,7 +113,7 @@ make_miss_data <- function(percent){
     # 誤りデータをデータフレームとして保存  
     incorrect <- data.frame("confidence" = conf, "tf" = misstf, "target" = misstar, "label" = numeric(length(misstar))) 
     # ファイル出力
-    write.table(incorrect, file = paste("../data/", level, "_", miss_outfile, sep = ""), sep = "\t", append=T, quote=F, row.names = FALSE, col.names = FALSE) # ファイル出力
+    write.table(incorrect, file = paste("./data/", level, "_", miss_outfile, sep = ""), sep = "\t", append=T, quote=F, row.names = FALSE, col.names = FALSE) # ファイル出力
   }
   file.remove("tmp1")
   file.remove("tmp2")
@@ -127,7 +127,7 @@ make_ans_data_ENCODE <- function(){
   data<-data[-1,] # １列目の削除
   colnames(data) <- c("confidence", "tf", "target")
   correct <- transform(data, label=numeric(nrow(data))+1) # tfとtargetに正解ラベルである1だけの列を足す
-  write.table(correct, file = paste("../data/", ans_outfile, sep = ""), sep = "\t", append=T, quote=F, row.names = FALSE, col.names = FALSE) # ファイル出力
+  write.table(correct, file = paste("./data/", ans_outfile, sep = ""), sep = "\t", append=T, quote=F, row.names = FALSE, col.names = FALSE) # ファイル出力
   return(data) 
 }
 
@@ -200,9 +200,9 @@ data <- data.frame(data)
 cut_data <- cut_gene_ENCODE(renameTF, renameTA)  # gene cut
 data <- make_ans_data_ENCODE()
 
-system(paste("zsh ../data/Duplicate.sh ", ans_outfile, sep=""))
+system(paste("zsh ./data/Duplicate.sh ", ans_outfile, sep=""))
 
-dataframe <- read.table(paste("../data/", ans_outfile, sep=""))
+dataframe <- read.table(paste("./data/", ans_outfile, sep=""))
 colnames(dataframe) <- c("confidence", "tf", "target", "label")
 make_miss_data(percentage)
 

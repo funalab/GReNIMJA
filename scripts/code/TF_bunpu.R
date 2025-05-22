@@ -4,7 +4,7 @@
 # input filename
 inputfile = "./rename_tf"
 gene_protein_file = "./gene_gff/longestGene_proteinid.txt"
-protein_seq_file = "./GCF_000001405.39/proteomes/GCF_000001405.39_protein_refseq.faa"
+protein_seq_file = "./GCF_000001405.39/proteomes/GCF_000001405.39_GRCh38.p13_protein.faa"
 # output filename
 outputfile = "../data/TF_bunpu"
 #########################

@@ -43,7 +43,7 @@ gene_name <- read.table(geneName_file)
 
 rename = c()
 cut_gene = c()
-#rename = rep("AA", 27770)
+#rename = rep("AA", 26548)
 for (i in 1:nrow(ta)){
   print(paste("a", i, ": ", ta[i,1], sep = ""))
   if(ta[i,1] %in% gene_name[[1]]){  # すでに本来の遺伝子名だったら
@@ -55,15 +55,15 @@ for (i in 1:nrow(ta)){
     print(paste(ta[i,1], "->", sub("ORF", "orf", ta[i,1]), sep="" ))
   }
   else{  # そうではなかったら(名前を変える必要があったら)
-  for (j in 1:length(data.list)){
-    if( ta[i,1] %in% data.list[[j]]){
-      rename <- append(rename, data.list[[j]][1])
-      print(paste(ta[i,1], "->", data.list[[j]][1], sep="" ))
-      
-      #print(paste("b", ta[i,1], ": ", data.list[[j]][1], sep = ""))
-      #print(paste("i: ", i, "   rename: ", length(rename), sep = ""))
-    }
-  }
+      for (j in 1:length(data.list)){
+        if( ta[i,1] %in% data.list[[j]][1]){
+          rename <- append(rename, data.list[[j]][1])
+          print(paste("REGISTER:", ta[i,1], "->", data.list[[j]][1], sep="" ))
+
+          #print(paste("b", ta[i,1], ": ", data.list[[j]][1], sep = ""))
+          #print(paste("i: ", i, "   rename: ", length(rename), sep = ""))
+        }
+      }
       if(length(rename) != i){
         print("Cut Gene")
         rename <- append(rename, ta[i,1])
@@ -75,7 +75,8 @@ for (i in 1:nrow(ta)){
           print("\n")
           print("\n")
           print("\n")
-          exit
+          #exit
+          break
         }
       }
   }

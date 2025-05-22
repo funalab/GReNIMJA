@@ -1,7 +1,18 @@
 # Description
 Scripts for downloading raw data and formatting it for use as a dataset
 
-# How to use
+(*) Please make sure ```R``` and ```Python``` are downloaded before running the following scripts.
+The scripts have been tested on mac OS using ```R 4.4.2``` and ```Python 3.10.11```.
+
+# Install requirements
+```
+% python -m venv venv_build
+% source ./venv_build/bin/activate
+% pip install --upgrade pip
+% pip install pandas==2.2.3
+```
+
+# Build datasets
 
 If you want to execute all scripts at once, execute the following command. 
 ```
@@ -12,7 +23,9 @@ If you want to execute them one by one, follow the instructions below.
 
 1. Download human genome data (accession number: ```GCF_000001405.39```) from FTP server of NCBI
 ```
-zsh ./genome/get_GCF_000001405.39.sh
+cd ./genome
+zsh get_GCF_000001405.39.sh
+cd ../
 ```
 <!--
 ```
@@ -46,10 +59,16 @@ gunzip gene_attribute_edges.txt.gz
 
 4. Map gene names in the database to NCBI gene names  
 
-In this repository, post-processing has already been performed and 
-the files have been shared under ```./gene_gff/synonym```, 
-so we recommend skipping this step. If you are interested in the mapping operation, 
-please execute the following command``` cd ./_gene_gff && zsh gene_gff.sh && cd ../ ```. 
+```
+cd ./gene_gff
+zsh gene_gff.sh
+cd ../
+```
+
+In this repository, post-processing for synonym has already been performed and 
+the files have been shared under ```./gene_gff/synonym```. 
+If you are interested in the post-processing for synonym, 
+please refer``` ./_gene_gff/gene_gff.sh```. 
 You will need to manually delete lines with duplicate gene names.
 
 

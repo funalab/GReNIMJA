@@ -3,7 +3,7 @@
 
 
 ######### package ######### 
-requiredPackage_BC <- c("Biostrings")
+requiredPackage_BC <- c("Biostrings", "seqinr")
 if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
 
@@ -23,7 +23,7 @@ library(Biostrings)
 #inputfile = ""
 inputfile = "gene_edge.txt"
 gff_file="new_gene_edge.txt"
-genome_file="../GCF_000001405.39/genomes/GCF_000001405.39_genomic_refseq.fna"
+genome_file="../GCF_000001405.39/genomes/GCF_000001405.39_GRCh38.p13_genomic.fna"
 
 # output filename
 out_edge_file= "new_gene_edge.txt"
