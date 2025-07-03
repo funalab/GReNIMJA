@@ -76,6 +76,7 @@ You will need to manually delete lines with duplicate gene names.
 ```
 zsh mapping.sh [last 7 digits of dorothea file name]
 ```
+<!--
 If executing one by one, execute as follows
 ```
 Rscript ./code/rename.R [last 7 digits of dorothea file name]
@@ -85,7 +86,7 @@ less rename_tf | grep -v “ZNF286B” > rename_tf2
 rm rename_tf
 mv rename_tf2 rename_tf
 ```
-
+-->
 6. Get the upstream 1000 bp of the gene
 ```
 zsh ./code/get_not_cutGene.sh
