@@ -1,5 +1,5 @@
 # Description
-Scripts for downloading raw data and formatting it for use as a dataset
+Scripts for downloading raw data and formatting it to use as a dataset
 
 (*) Please make sure ```R``` and ```Python``` are downloaded before running the following scripts.
 The scripts have been tested on mac OS using ```R 4.4.2``` and ```Python 3.10.11```.
