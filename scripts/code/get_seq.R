@@ -106,11 +106,12 @@ transcript_id <- unique(data['tf'])
 target_id <- unique(data['target'])
 transcript_id <- transcript_id[transcript_id != "TF_random"]
 target_id <- target_id[target_id != "DNA_random"]
-if(0){
-get_tf_seq()
-get_ta_seq()
-}
+# if(0){
+# get_tf_seq()
+# get_ta_seq()
+# }
 
+error_i <- error_gene <- c()
 for (i in 1:nrow(data)){
   print(i)
   if(data[i,2] == "TF_random"){
@@ -141,13 +142,34 @@ for (i in 1:nrow(data)){
       dseq <- paste(dseq, dseqs[s], sep = "")
     }
   }else{
-  DNA_name <- data[i, 3]
-    dseq <- getSequence(gseq[data[i,3]], as.string = T)
-    dseq <- gsub("[(\")]", "", toupper(dseq))
-    dseq <- sub("LIST", "", dseq)
+    DNA_name <- data[i, 3]
+    if( !is.null(gseq[data[i,3]][[1]]) ){
+      dseq <- getSequence(gseq[data[i,3]], as.string = T)
+      dseq <- gsub("[(\")]", "", toupper(dseq))
+      dseq <- sub("LIST", "", dseq)
+    }else{
+      error_i <- append(error_i, i)
+      error_gene <- append( error_gene, data[i,3] )
+      print(paste( "i=", i, ": gene: ", data[i,3], sep="" ) )
+    }
   }
   result <- cbind(TF_name, seq, DNA_name, dseq, data[i,4], data[i,1])
   write.table(result, paste("./data/", inputfile, "_seq", sep=""), quote = F, row.names = F, col.names = F, sep = "\t", append = T)
 }
 
+save.image(paste(inputfile, ".RData", sep=""))
+
 #########################
+
+# ans_Data
+# 12461 LINC02151 gffにない train, valid, testにも入ってない
+# 412214 ZNF33CP gffにない train, valid, testにも入ってない
+# 429956 IGKV1OR2-1 gffにない train, valid, testにも入ってない
+# 688484 LINC02151
+# 960949 LINC02151
+# 1101902 LINC02151
+# 1482486 ZNF33CP
+
+# D_miss_Data
+# 994 ZNF192P1
+# 

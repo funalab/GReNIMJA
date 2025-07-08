@@ -2,26 +2,26 @@
 set -ex
 
 ## 1. Download human genome data (accession number: ```GCF_000001405.39```) from FTP server of NCBI
-#cd ./genome
-#zsh get_GCF_000001405.39.sh
-#cd ../
-#
+cd ./genome
+zsh get_GCF_000001405.39.sh
+cd ../
+
 ## 2. Download and unzip data from ```dorothea```
-#curl --output dorothea_download.tar.gz "https://codeload.github.com/saezlab/dorothea/legacy.tar.gz/HEAD"
-#tar -zxvf dorothea_download.tar.gz
+curl --output dorothea_download.tar.gz "https://codeload.github.com/saezlab/dorothea/legacy.tar.gz/HEAD"
+tar -zxvf dorothea_download.tar.gz
 filename=$(find . -type d -name "saezlab-dorothea-*" -exec basename {} \; | grep -oE '[a-f0-9]{7}$')
 #
 ## 3. Download and unzip data from ```ENCODE```
-#curl -O https://maayanlab.cloud/static/hdfs/harmonizome/data/encodetfppi/gene_attribute_edges.txt.gz
-#gunzip gene_attribute_edges.txt.gz
-#
+curl -O https://maayanlab.cloud/static/hdfs/harmonizome/data/encodetfppi/gene_attribute_edges.txt.gz
+gunzip gene_attribute_edges.txt.gz
+
 ## 4. Map gene names in the database to NCBI gene names
-#cd ./gene_gff
-#zsh gene_gff.sh
-#cd ../
+cd ./gene_gff
+zsh gene_gff.sh
+cd ../
 
 # 5. Create a mapping table
-#zsh mapping.sh $filename
+zsh mapping.sh $filename
 
 # 6. Get the upstream 1000 bp of the gene
 zsh ./code/get_not_cutGene.sh

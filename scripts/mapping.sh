@@ -21,8 +21,8 @@ mv tmp cut_gene
 # Create correct data (gene names and labels only)
 Rscript ./code/make_data.R $1
 
-# Get the longest protein
-R --no-save < ./code/get_longest_seq.R
+## Get the longest protein
+Rscript ./code/get_longest_seq.R
 
 # Get the sequence for the specified upstream bp and the TF sequence
 Rscript ./code/get_seq.R ans_Data
@@ -30,4 +30,4 @@ Rscript ./code/get_seq.R D_miss_Data
 python ./code/Data_toPickle.py # Compress to pickle
 
 # Get TF length distribution (for batch learning)
-R --no-save <  ./code/TF_bunpu.R
+Rscript ./code/TF_bunpu.R

@@ -20,7 +20,7 @@ level = "D"
 percentage = 1
 
 #########################
-
+set.seed(0)
 
 ######### 関数 #########
 cut_gene <- function(renameTF, renameTA){

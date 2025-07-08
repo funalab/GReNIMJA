@@ -1,5 +1,5 @@
 # Description
-Scripts for downloading raw data and formatting it to use as a dataset
+Scripts for downloading raw data and formatting it for use as a dataset
 
 (*) Please make sure ```R``` and ```Python``` are downloaded before running the following scripts.
 The scripts have been tested on mac OS using ```R 4.4.2``` and ```Python 3.10.11```.
@@ -76,8 +76,10 @@ You will need to manually delete lines with duplicate gene names.
 ```
 zsh mapping.sh [last 7 digits of dorothea file name]
 ```
-<!--
 If executing one by one, execute as follows
+
+5-1. Rename gene symbols based on synonyms
+
 ```
 Rscript ./code/rename.R [last 7 digits of dorothea file name]
 
@@ -86,13 +88,13 @@ less rename_tf | grep -v “ZNF286B” > rename_tf2
 rm rename_tf
 mv rename_tf2 rename_tf
 ```
--->
-6. Get the upstream 1000 bp of the gene
+
+5-2. Get the upstream 1000 bp of the gene
 ```
 zsh ./code/get_not_cutGene.sh
 ```
 
-7. Delete genes with the same position but different names (considering strand)
+5-3. Delete genes with the same position but different names (considering strand)
 ```
 python ./code/cut_gene.py
 less cut_gene |grep -v -e '^\s*#' -e '^\s*$' > tmp
@@ -100,27 +102,29 @@ rm cut_gene
 mv tmp cut_gene
 ```
 
-8. Delete genes for which synonyms could not be matched, and label the correct TF-target relationships and randomly selected incorrect TF-target relationships with 1 and 0, respectively
+6. Generate positive and negative datasets of TF-gene pairs
+
+6-1. Delete genes for which synonyms could not be matched, and label the correct TF-target relationships and randomly selected incorrect TF-target relationships with 1 and 0, respectively
 
 ```
 Rscript ./code/make_data.R [last 7 digits of dorothea file name]
 ```
 
 
-9. Take the longest protein considering splicing variants
+6-2. Take the longest protein considering splicing variants
 ```
-R --no-save < ./code/get_longest_seq.R
+Rscript ./code/get_longest_seq.R
 ```
 
-10. Take the sequence of the specified upstream bp and the TF sequence
+6-3. Take the sequence of the specified upstream bp and the TF sequence
 ```
 Rscript ./code/get_seq.R ans_Data
 Rscript ./code/get_seq.R D_miss_Data
 python ./code/Data_toPickle.py
 ```
 
-11. Obtain the TF length distribution (for batch learning)
+7. Get the TF length distribution (for batch learning)
 ```
-R --no-save <  bunpu/TF_long_bunpu.R
+Rscript code/TF_bunpu.R
 ```
 
