@@ -4,6 +4,10 @@ Scripts for downloading raw data and formatting it for use as a dataset
 (*) Please make sure ```R``` and ```Python``` are downloaded before running the following scripts.
 The scripts have been tested on mac OS using ```R 4.4.2``` and ```Python 3.10.11```.
 
+# Note
+
+In this script, you can generate datasets following the methods described in the paper, but due to database updates and other some factors, you cannot completely reproduce the datasets used in the paper.
+
 # Install requirements
 ```
 % python -m venv venv_build
