@@ -159,12 +159,12 @@ def main(argss):
     f.close()
 
     # filename
-    amino_dict = './embedding/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
+    amino_dict = './embeddings/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
                  '_' + str(amino_stride) + '_amino_dict.pickle'
-    dna_dict = './embedding/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_dna_dict.pickle'
-    amino_preVec = './embedding/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
+    dna_dict = './embeddings/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_dna_dict.pickle'
+    amino_preVec = './embeddings/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
                    '_' + str(amino_stride) + '_Aword2vec.gensim.model'
-    dna_preVec = './embedding/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_Dword2vec.gensim.model'
+    dna_preVec = './embeddings/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_Dword2vec.gensim.model'
 
     filename, miss_datafile, TF_bunpu = None, None, None
     if device2 == 'cpu':
