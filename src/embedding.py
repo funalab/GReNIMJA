@@ -63,7 +63,7 @@ class word_embedding:
 
             # 学習
             amino_model = Word2Vec(sentences=amino_k_mer, vector_size=self.amino_dim, min_count=1, window=10,
-                                   epochs=1, sg=1, seed=1)
+                                   epochs=10, sg=1, seed=1)
             amino_model.save(self.amino_preVec)
 
             # 単語IDの設定
@@ -87,7 +87,7 @@ class word_embedding:
             # Word2Vecモデルの学習
             # sizeは特徴量の数、min_count以下の登場数の単語を無視、前後window幅の単語との関係を考慮、iter回数分繰り返し計算
             dna_model = Word2Vec(sentences=dna_k_mer, vector_size=self.dna_dim, min_count=1, window=10,
-                                 epochs=15, sg=1, seed=1)
+                                 epochs=10, sg=1, seed=1)
             dna_model.save(self.dna_preVec)
 
             # 単語IDの設定

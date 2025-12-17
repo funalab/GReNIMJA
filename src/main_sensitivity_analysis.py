@@ -159,21 +159,12 @@ def main(argss):
     f.close()
 
     # filename
-    if emb_num == 'all':
-        amino_dict = './embedding/all_vector/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
-                     '_' + str(amino_stride) + '_amino_dict.pickle'
-        dna_dict = './embedding/all_vector/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_Dna2vec_dict.pickle'
-        amino_preVec = './embedding/all_vector/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
-                       '_' + str(amino_stride) + '_Aword2vec.gensim.model'
-        dna_preVec = './embedding/all_vector/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_Dna2vec.pickle'
-
-    else:
-        amino_dict = './embedding/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
-                     '_' + str(amino_stride) + '_amino_dict.pickle'
-        dna_dict = './embedding/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_dna_dict.pickle'
-        amino_preVec = './embedding/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
-                       '_' + str(amino_stride) + '_Aword2vec.gensim.model'
-        dna_preVec = './embedding/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_Dword2vec.gensim.model'
+    amino_dict = './embedding/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
+                 '_' + str(amino_stride) + '_amino_dict.pickle'
+    dna_dict = './embedding/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_dna_dict.pickle'
+    amino_preVec = './embedding/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
+                   '_' + str(amino_stride) + '_Aword2vec.gensim.model'
+    dna_preVec = './embedding/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_Dword2vec.gensim.model'
 
     filename, miss_datafile, TF_bunpu = None, None, None
     if device2 == 'cpu':
