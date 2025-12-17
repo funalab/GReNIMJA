@@ -212,8 +212,9 @@ def main(argss):
         dict[11] += 1
 
     #os.makedirs('../embedding', exist_ok=True)
-    train_vector = word_embedding(data, dict)
-    train_vector.train_wordVec()
+    if embedding == 'embedding':
+        train_vector = word_embedding(data, dict)
+        train_vector.train_wordVec()
     #################################
 
     # 値の初期化
