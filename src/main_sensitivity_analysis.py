@@ -175,7 +175,7 @@ def main(argss):
                        '_' + str(amino_stride) + '_Aword2vec.gensim.model'
         dna_preVec = './embedding/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_Dword2vec.gensim.model'
 
-    filename, miss_datafile = None, None
+    filename, miss_datafile, TF_bunpu = None, None, None
     if device2 == 'cpu':
         ## パラメータの設定 ##
         # filename = '../data/cpu_ans.pickle'
