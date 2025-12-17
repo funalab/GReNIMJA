@@ -12,7 +12,7 @@ from src.train import train_model
 from src.test import test_model
 from gensim.models.word2vec import Word2Vec
 from src.makeData import make_Data, cross_validation
-from src.dataloadar import data_load, test_dataLoad
+from src.dataloadars import data_load, test_dataLoad
 from src.embedding import word_embedding
 import numpy as np
 
