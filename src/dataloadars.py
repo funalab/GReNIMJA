@@ -35,18 +35,18 @@ def data_load(CV_para, short, bp, data_dir, K_i, batch_size):
     valid_batchsize = batch_size[1]
 
     if CV == 'TRUE':
-        with open('../data/' + data_dir + '/' + str(K) + 'CV/train' + str(K_i) + '.pickle', 'rb') as f:
+        with open(data_dir + '/' + str(K) + 'CV/train' + str(K_i) + '.pickle', 'rb') as f:
             train = pickle.load(f)
-        with open('../data/' + data_dir + '/' + str(K) + 'CV/valid' + str(K_i) + '.pickle', 'rb') as f:
+        with open(data_dir + '/' + str(K) + 'CV/valid' + str(K_i) + '.pickle', 'rb') as f:
             valid = pickle.load(f)
 
     else:
-        with open('../data/' + data_dir + '/train.pickle', 'rb') as f:
+        with open(data_dir + '/train.pickle', 'rb') as f:
             train = pickle.load(f)
-        with open('../data/' + data_dir + '/valid.pickle', 'rb') as f:
+        with open(data_dir + '/valid.pickle', 'rb') as f:
             valid = pickle.load(f)
 
-    with open('../data/pickle/test.pickle', 'rb') as f:
+    with open(data_dir + '/test.pickle', 'rb') as f:
         test = pickle.load(f)
 
     if short == 'TRUE':

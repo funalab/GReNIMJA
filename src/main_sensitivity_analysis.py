@@ -20,6 +20,7 @@ import numpy as np
 
 
 def main(argss):
+    data_dir = str(argss.data_dir)
     epoch_num = int(argss.epoch_num) #100
     mer = int(argss.mer)#5
     amino_mer = int(argss.amino_mer)#4
@@ -37,7 +38,6 @@ def main(argss):
     check = './checkpoint/init_checkpoint.pt'
 
     # dataset
-    data_dir = 'unknown_TFs'
     dataset = 'choice'
     order = 2  # TRUE: 1, FALSE: 2
     short = 'TRUE'
@@ -207,10 +207,10 @@ def main(argss):
 
     ## データファイルの作成 ##
     # そもそもデータが全く用意されていない
-    if not os.path.isfile('./datasets/' + str(data_dir) + '/test.pickle'):
+    if not os.path.isfile(str(data_dir) + '/test.pickle'):
         make_Data(data)
     # train, valid, testは用意されているが交差検証用のデータが用意されていない
-    if CV == 'TRUE' and not os.path.exists('./datasets/' + str(data_dir) + '/' + str(CV_k) + 'CV'):
+    if CV == 'TRUE' and not os.path.exists(str(data_dir) + '/' + str(CV_k) + 'CV'):
         cross_validation(CV_k, data_dir)
 
     # k-merの辞書がない
@@ -333,7 +333,8 @@ def main(argss):
         epoch = checkpoint["epoch"] + 1
         os.makedirs('./result/Details', exist_ok=True)
 
-        test, test_dataset, test_iter = test_dataLoad(short, bp, data_dir, batch_size)
+        # short, bp, batch_size, species, dataset_path
+        test, test_dataset, test_iter = test_dataLoad(short, bp, batch_size,species='human', dataset_path=data_dir + '/test.pickle')
         # save_data(epoch_num, losses, training_accuracies, valid_losses, valid_accuracies)
         TPs, FPs, FNs, TNs = test_model(vector, test_dataset, test_batchsize, model, test_iter, device, embedding, test)
 
@@ -352,6 +353,7 @@ def main(argss):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    parser.add_argument('--data_dir', type=str, defalut='./datasets/unknown_TFs')
     parser.add_argument('--epoch_num', type=int, default=100)
     parser.add_argument('--mer', type=int, default=5)
     parser.add_argument('--amino_mer', type=int, default=4)
