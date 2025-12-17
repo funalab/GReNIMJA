@@ -353,7 +353,7 @@ def main(argss):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data_dir', type=str, defalut='./datasets/unknown_TFs')
+    parser.add_argument('--data_dir', type=str, default='./datasets/unknown_TFs')
     parser.add_argument('--epoch_num', type=int, default=100)
     parser.add_argument('--mer', type=int, default=5)
     parser.add_argument('--amino_mer', type=int, default=4)
