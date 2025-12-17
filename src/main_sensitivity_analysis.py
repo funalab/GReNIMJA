@@ -208,6 +208,8 @@ def main(argss):
     ## データファイルの作成 ##
     # そもそもデータが全く用意されていない
     if not os.path.isfile(str(data_dir) + '/test_dataset.pickle'):
+        print(str(data_dir) + '/test_dataset.pickle')
+        print(os.path.isfile(str(data_dir) + '/test_dataset.pickle'))
         make_Data(data)
     # train, valid, testは用意されているが交差検証用のデータが用意されていない
     if CV == 'TRUE' and not os.path.exists(str(data_dir) + '/' + str(CV_k) + 'CV'):
