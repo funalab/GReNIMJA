@@ -14,7 +14,7 @@ def train_model(vector, train_datasets, valid_datasets, batch_size, model, lossF
     valid_accuracies = []
     valid_losses = []
     for epoch in range(epochs, epoch_num + 1):
-        print(f'Epoch {epoch+1}/epochs')
+        print(f'Epoch {epoch}/{epoch_num}')
         print('Training ...')
         # training
         all_loss = 0.0
