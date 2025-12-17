@@ -13,6 +13,7 @@ def train_model(vector, train_datasets, valid_datasets, batch_size, model, lossF
     training_accuracies = []
     valid_accuracies = []
     valid_losses = []
+    iter = 0
     for epoch in range(epochs, epoch_num + 1):
         print(f'Epoch {epoch}/{epoch_num}')
         print('Training ...')
@@ -59,6 +60,7 @@ def train_model(vector, train_datasets, valid_datasets, batch_size, model, lossF
                 batch_loss = lossFn(batch_sigmoid, ans2)
                 batch_loss.backward()
                 optimizer.step()
+                iter += 1
                 all_loss += batch_loss.item()
                 _, pre = torch.max(batch_sigmoid, 1)
                 n = torch.add(pre, ans)
@@ -130,7 +132,7 @@ def train_model(vector, train_datasets, valid_datasets, batch_size, model, lossF
 
             print("epoch", epoch, "\t", "loss", valid_all_loss, "\t", "valid_accuracy", valid_accuracy, "\t",
                   "time", e_time - s_time)
-
+            print(f"Total iteration: {iter}")
             torch.save({'epoch': epoch, 'model_state_dict': model.state_dict(),
                         'optimizer_state_dict': optimizer.state_dict()}, f'checkpoint/' + str(C_k)
                        + 'checkpoint/checkpoint' + str(epoch) + '.pt')

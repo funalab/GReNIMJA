@@ -20,6 +20,7 @@ import numpy as np
 
 
 def main(argss):
+    print('Settings...')
     data_dir = str(argss.data_dir)
     epoch_num = int(argss.epoch_num) #100
     mer = int(argss.mer)#5
