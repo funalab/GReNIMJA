@@ -1,6 +1,10 @@
 #!/bin/zsh
 
 # sensitivity analysis
+# encoding
+python src/main.py --epoch_num 10 --mer 5 --amino_mer 4 --amino_emb_dim 100 --dna_emb_dim 50 --embedding embedding
+python src/main.py --epoch_num 10 --mer 5 --amino_mer 4 --amino_emb_dim 100 --dna_emb_dim 50 --embedding one_hot
+
 # mer
 python src/main.py --epoch_num 10 --mer 1 --amino_mer 4 --amino_emb_dim 100 --dna_emb_dim 50
 python src/main.py --epoch_num 10 --mer 3 --amino_mer 4 --amino_emb_dim 100 --dna_emb_dim 50

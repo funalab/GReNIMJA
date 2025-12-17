@@ -25,7 +25,8 @@ def main(argss):
     amino_mer = int(argss.amino_mer)#4
     amino_emb_dim = int(argss.amino_emb_dim)#100
     dna_emb_dim = int(argss.dna_emb_dim)#50
-    save_dir = f'./result/mer-{mer}_amer-{amino_mer}_emb-dim-{dna_emb_dim}_aemb-dim-{amino_emb_dim}'
+    embedding = str(argss.embedding)#'embedding'  # 'one_hot'
+    save_dir = f'./result/mer-{mer}_amer-{amino_mer}_emb-dim-{dna_emb_dim}_aemb-dim-{amino_emb_dim}_embedding-{embedding}'
     #os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
     # device
@@ -36,7 +37,7 @@ def main(argss):
     check = './checkpoint/init_checkpoint.pt'
 
     # dataset
-    data_dir = 'pickle'
+    data_dir = 'unknown_TFs'
     dataset = 'choice'
     order = 2  # TRUE: 1, FALSE: 2
     short = 'TRUE'
@@ -45,13 +46,12 @@ def main(argss):
     label = 'D'
     valid_sample = 500
     test_sample = 1000
-    CV = 'TRUE'
+    CV = 'FALSE'
     CV_k = 5
     test_batchsize = 1
     valid_Datanum = 10000  # 使わない
 
     # model
-    embedding = 'embedding'  # 'one_hot'
     stride = 1
     amino_stride = 1
     learn = 'TRUE'
@@ -160,34 +160,34 @@ def main(argss):
 
     # filename
     if emb_num == 'all':
-        amino_dict = '../embedding/all_vector/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
+        amino_dict = './embedding/all_vector/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
                      '_' + str(amino_stride) + '_amino_dict.pickle'
-        dna_dict = '../embedding/all_vector/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_Dna2vec_dict.pickle'
-        amino_preVec = '../embedding/all_vector/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
+        dna_dict = './embedding/all_vector/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_Dna2vec_dict.pickle'
+        amino_preVec = './embedding/all_vector/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
                        '_' + str(amino_stride) + '_Aword2vec.gensim.model'
-        dna_preVec = '../embedding/all_vector/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_Dna2vec.pickle'
+        dna_preVec = './embedding/all_vector/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_Dna2vec.pickle'
 
     else:
-        amino_dict = '../embedding/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
+        amino_dict = './embedding/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
                      '_' + str(amino_stride) + '_amino_dict.pickle'
-        dna_dict = '../embedding/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_dna_dict.pickle'
-        amino_preVec = '../embedding/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
+        dna_dict = './embedding/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_dna_dict.pickle'
+        amino_preVec = './embedding/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
                        '_' + str(amino_stride) + '_Aword2vec.gensim.model'
-        dna_preVec = '../embedding/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_Dword2vec.gensim.model'
+        dna_preVec = './embedding/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_Dword2vec.gensim.model'
 
     if device2 == 'cpu':
         ## パラメータの設定 ##
-        filename = '../data/cpu_ans.pickle'
-        miss_datafile = '../data/cpu_2D_miss.pickle'
-        TF_bunpu = '../TF_group'
-        TF_bunpu = '../TF_cpubunpu'
+        # filename = '../data/cpu_ans.pickle'
+        # miss_datafile = '../data/cpu_2D_miss.pickle'
+        # TF_bunpu = '../TF_group'
+        # TF_bunpu = '../TF_cpubunpu'
         train_batchsize = 2
         valid_batchsize = 1
         ####################
     else:
-        filename = '../data/ans.pickle'
-        miss_datafile = '../data/2D_miss.pickle'
-        TF_bunpu = '../data/TF_bunpu'
+        # filename = '../data/ans.pickle'
+        # miss_datafile = '../data/2D_miss.pickle'
+        # TF_bunpu = '../data/TF_bunpu'
         train_batchsize = 1024
         valid_batchsize = 512
         ####################
@@ -206,10 +206,10 @@ def main(argss):
 
     ## データファイルの作成 ##
     # そもそもデータが全く用意されていない
-    if not os.path.isfile('../data/' + str(data_dir) + '/test.pickle'):
+    if not os.path.isfile('./datasets/' + str(data_dir) + '/test.pickle'):
         make_Data(data)
     # train, valid, testは用意されているが交差検証用のデータが用意されていない
-    if CV == 'TRUE' and not os.path.exists('../data/' + str(data_dir) + '/' + str(CV_k) + 'CV'):
+    if CV == 'TRUE' and not os.path.exists('./datasets/' + str(data_dir) + '/' + str(CV_k) + 'CV'):
         cross_validation(CV_k, data_dir)
 
     # k-merの辞書がない
@@ -218,7 +218,7 @@ def main(argss):
     if not os.path.isfile(dna_dict):
         dict[11] += 1
 
-    os.makedirs('../embedding', exist_ok=True)
+    #os.makedirs('../embedding', exist_ok=True)
     train_vector = word_embedding(data, dict)
     train_vector.train_wordVec()
     #################################
@@ -356,8 +356,7 @@ if __name__ == '__main__':
     parser.add_argument('--amino_mer', type=int, default=4)
     parser.add_argument('--dna_emb_dim', type=int, default=50)
     parser.add_argument('--amino_emb_dim', type=int, default=100)
-
-
+    parser.add_argument('--embedding', type=str, default='embedding', choices=['embedding', 'one_hot'])
     args = parser.parse_args()
     main(args)
 
