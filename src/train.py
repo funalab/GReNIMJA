@@ -1,7 +1,7 @@
 import torch
 import torch.nn.functional
 import time
-from .func import NewsDataset, ans_one_hot, pad_collate
+from src.func import NewsDataset, ans_one_hot, pad_collate
 from torch.utils.data import DataLoader
 
 

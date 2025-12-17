@@ -1,4 +1,7 @@
 import os
+import sys
+sys.path.append(os.getcwd())
+
 import torch
 import pickle
 import argparse
@@ -9,9 +12,9 @@ from tqdm import tqdm
 from gensim.models.word2vec import Word2Vec
 from sklearn.metrics import roc_curve, precision_recall_curve, auc, accuracy_score, confusion_matrix
 from torch.utils.data import DataLoader
-from .dataloadars import test_dataLoad
-from .func import ans_one_hot, pad_collate, initialize, convert, NewsDataset, Embedding
-from .layers import myModel
+from src.dataloadars import test_dataLoad
+from src.func import ans_one_hot, pad_collate, initialize, convert, NewsDataset, Embedding
+from src.layers import myModel
 
 
 class Calculation:

@@ -1,7 +1,7 @@
 import pandas as pd
 import pickle
 from sklearn.model_selection import train_test_split
-from .func import make_group
+from src.func import make_group
 import random
 import os
 
