@@ -205,8 +205,8 @@ def main(argss):
         cross_validation(CV_k, data_dir)
 
     # k-merの辞書がない
-    print(amino_dict)
-    print(os.path.isfile(amino_dict))
+    print(dna_dict)
+    print(os.path.isfile(dna_dict))
     if not os.path.isfile(amino_dict):
         dict[10] += 1
     if not os.path.isfile(dna_dict):
