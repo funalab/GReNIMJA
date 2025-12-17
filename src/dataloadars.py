@@ -46,7 +46,7 @@ def data_load(CV_para, short, bp, data_dir, K_i, batch_size):
         with open(data_dir + '/valid.pickle', 'rb') as f:
             valid = pickle.load(f)
 
-    with open(data_dir + '/test.pickle', 'rb') as f:
+    with open(data_dir + '/test_dataset.pickle', 'rb') as f:
         test = pickle.load(f)
 
     if short == 'TRUE':
