@@ -6,9 +6,10 @@ inputfile = "./rename_tf"
 gene_protein_file = "./gene_gff/longestGene_proteinid.txt"
 protein_seq_file = "./GCF_000001405.39/proteomes/GCF_000001405.39_GRCh38.p13_protein.faa"
 # output filename
-outputfile = "../data/TF_bunpu"
+outputfile = "./data/TF_bunpu"
 #########################
 
+library(seqinr)
 
 ######### main #########
 
@@ -21,16 +22,14 @@ colnames(longest) <- c("tf_ID", "protein_ID")
 pseq <- read.fasta(protein_seq_file)
 
 # 各TFの名前と長さをベクトルとして保存する
+lengths <- TF_names <- c()
 for (i in 1:nrow(TF_table)){
   TF_name = TF_table[i,2]
   longest_protein <- longest[longest$tf_ID == TF_name,]
-  protein <- longest_protein[1,2]
-  seq <- getSequence(pseq[protein], as.string = F)
-  length <- length(seq[[1]])
-  if(i == 1){
-    lengths<-c(length)
-    TF_names <- c(TF_name)
-  }else{
+  if( nrow(longest_protein) >= 1 ){ # 例外処理
+    protein <- longest_protein[1,2]
+    seq <- getSequence(pseq[protein], as.string = F)
+    length <- length(seq[[1]])
     lengths <- append(lengths, length)
     TF_names <- append(TF_names, TF_name)
   }
@@ -65,4 +64,12 @@ while(i <= nrow(TF_length)){
 # どのグループにいくつのTFが属するかを調べる
 TF_length <- transform(TF_length, group = group)
 write.table(TF_length, file = outputfile, quote=F, row.names = FALSE, col.names = FALSE)
+
+# TFの長さに関するヒストグラムを作成する 
+kugiri <- seq(0, 4100, cut_group)
+pdf("./data/tf_length_histgrams.pdf", width = 10, height = 10)
+hist(lengths, right = F, breaks = kugiri, ylim=c(0,150))
+
+dev.off() 
 ######################################
+

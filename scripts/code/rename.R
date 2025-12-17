@@ -56,7 +56,8 @@ for (i in 1:nrow(ta)){
   }
   else{  # そうではなかったら(名前を変える必要があったら)
       for (j in 1:length(data.list)){
-        if( ta[i,1] %in% data.list[[j]][1]){
+        # if( ta[i,1] %in% data.list[[j]][1]){
+        if( ta[i,1] %in% data.list[[j]]){
           rename <- append(rename, data.list[[j]][1])
           print(paste("REGISTER:", ta[i,1], "->", data.list[[j]][1], sep="" ))
 
