@@ -131,19 +131,19 @@ def main():
     view = 'FALSE'
     sigopt = 'FALSE'
 
-    if len(args) > 1:
-        bp = args[1]
-        stride = args[2]
-        amino_stride = args[3]
-        mer = args[4]
-        amino_mer = args[5]
-        amino_emb_dim = args[6]
-        dna_emb_dim = args[7]
-        a_hiddendim = args[8]
-        d_hiddendim = args[9]
-        cnn = args[10]
-        Calc = args[11]
-        conv_num = args[12]
+    # if len(args) > 1:
+    #     bp = args[1]
+    #     stride = args[2]
+    #     amino_stride = args[3]
+    #     mer = args[4]
+    #     amino_mer = args[5]
+    #     amino_emb_dim = args[6]
+    #     dna_emb_dim = args[7]
+    #     a_hiddendim = args[8]
+    #     d_hiddendim = args[9]
+    #     cnn = args[10]
+    #     Calc = args[11]
+    #     conv_num = args[12]
 
 
     write_list = ['bp:', str(bp), 'dna_stride:', str(stride), 'amino_stride:', str(amino_stride), 'dna_mer:', str(mer),
