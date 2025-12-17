@@ -161,10 +161,10 @@ def main(argss):
     # filename
     amino_dict = './embeddings/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
                  '_' + str(amino_stride) + '_amino_dict.pickle'
-    dna_dict = './embeddings/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_dna_dict.pickle'
+    dna_dict = './embeddings/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_Dna2vec_dict.pickle'
     amino_preVec = './embeddings/' + str(amino_mer) + '_' + str(amino_emb_dim) + \
                    '_' + str(amino_stride) + '_Aword2vec.gensim.model'
-    dna_preVec = './embeddings/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_Dword2vec.gensim.model'
+    dna_preVec = './embeddings/' + str(mer) + '_' + str(dna_emb_dim) + '_' + str(stride) + '_Dna2vec.pickle'
 
     filename, miss_datafile, TF_bunpu = None, None, None
     if device2 == 'cpu':
@@ -205,8 +205,6 @@ def main(argss):
         cross_validation(CV_k, data_dir)
 
     # k-merの辞書がない
-    print(dna_dict)
-    print(os.path.isfile(dna_dict))
     if not os.path.isfile(amino_dict):
         dict[10] += 1
     if not os.path.isfile(dna_dict):
