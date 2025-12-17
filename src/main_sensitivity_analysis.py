@@ -1,16 +1,16 @@
 import argparse
 import sys
 import pickle
-from func import convert, NewsDataset, Embedding, initialize
-from layers import myModel
+from .func import convert, NewsDataset, Embedding, initialize
+from .layers import myModel
 import torch.nn.functional
-from train import train_model
-from test import test_model
+from .train import train_model
+from .test import test_model
 import os
 from gensim.models.word2vec import Word2Vec
-from makeData import make_Data, cross_validation
-from dataloadar import data_load, test_dataLoad
-from embedding import word_embedding
+from .makeData import make_Data, cross_validation
+from .dataloadar import data_load, test_dataLoad
+from .embedding import word_embedding
 import numpy as np
 
 

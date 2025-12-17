@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from typing import Tuple, List
-from lstm2d_cell import LSTM2dCell
+from .lstm2d_cell import LSTM2dCell
 torch.autograd.set_detect_anomaly(True)
 torch.manual_seed(0)
 

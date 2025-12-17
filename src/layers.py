@@ -1,9 +1,9 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from func import min_max, z_score, z_score2, min_max3
+from .func import min_max, z_score, z_score2, min_max3
 import pandas as pd
-from lstm2d import LSTM2d
+from .lstm2d import LSTM2d
 #from MDRNN._layers.mdlstm import MDLSTM
 import numpy as np
 
