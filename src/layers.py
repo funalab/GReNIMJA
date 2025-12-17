@@ -237,7 +237,7 @@ class myModel(nn.Module):
             return dna_rnn_out, 0
 
     # アミノ酸配列とDNA配列の特徴量を統合し、再びRNNに入力する(相互作用の学習)
-    def Integration(self, amino, dna, save_path):
+    def Integration(self, amino, dna, save_path=None):
         sigmoid, amino_att, dna_attmap, dna_att = 0, 0, 0, 0
         if self.att == 'att' or self.att == False:
             feartures = torch.cat([amino, dna], dim=1)  # feartures.size() = torch.Size([batch_size, 2 * hidden_dim])
@@ -274,10 +274,11 @@ class myModel(nn.Module):
                 lines = []
                 for r in f:
                     lines.append(str(r))
-                f = open(f'{save_path}/after2DLSM_test_feature.txt', 'a')
-                f.write('\n'.join(lines))
-                f.write('\n')
-                f.close()
+                if save_path is not None:
+                    f = open(f'{save_path}/after2DLSM_test_feature.txt', 'a')
+                    f.write('\n'.join(lines))
+                    f.write('\n')
+                    f.close()
                 
 
             else:  # mean or add or RNN
