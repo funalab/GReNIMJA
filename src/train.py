@@ -3,7 +3,7 @@ import torch.nn.functional
 import time
 from src.func import NewsDataset, ans_one_hot, pad_collate
 from torch.utils.data import DataLoader
-
+from tqdm import tqdm
 
 def train_model(vector, train_datasets, valid_datasets, batch_size, model, lossFn, optimizer, epoch_num, iter, device,
                 embedding, epochs, sigopt, C_k):
@@ -14,11 +14,13 @@ def train_model(vector, train_datasets, valid_datasets, batch_size, model, lossF
     valid_accuracies = []
     valid_losses = []
     for epoch in range(epochs, epoch_num + 1):
+        print(f'Epoch {epoch+1}/epochs')
+        print('Training ...')
         # training
         all_loss = 0.0
         training_TRUE = 0
         s_time = time.time()
-        for aseqs, dseqs, ansss in train_datasets:
+        for aseqs, dseqs, ansss in tqdm(train_datasets):
             ansss = ans_one_hot(ansss)
             amino_hoge, dna_hoge = vector.convert_vector(aseqs, dseqs)
             dataset_train = NewsDataset(amino_hoge, dna_hoge, ansss)
@@ -74,7 +76,7 @@ def train_model(vector, train_datasets, valid_datasets, batch_size, model, lossF
         valid_TRUE = 0
         valid_all_loss = 0.0
         with torch.no_grad():
-            for aseqs, dseqs, ansss in valid_datasets:
+            for aseqs, dseqs, ansss in tqdm(valid_datasets):
                 ansss = ans_one_hot(ansss)
                 amino_hoge, dna_hoge = vector.convert_vector(aseqs, dseqs)
                 dataset_train = NewsDataset(amino_hoge, dna_hoge, ansss)
