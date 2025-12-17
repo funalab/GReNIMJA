@@ -207,8 +207,7 @@ def main(argss):
 
     ## データファイルの作成 ##
     # そもそもデータが全く用意されていない
-    print(str(data_dir) + '/test.pickle')
-    if not os.path.isfile(str(data_dir) + '/test.pickle'):
+    if not os.path.isfile(str(data_dir) + '/test_dataset.pickle'):
         make_Data(data)
     # train, valid, testは用意されているが交差検証用のデータが用意されていない
     if CV == 'TRUE' and not os.path.exists(str(data_dir) + '/' + str(CV_k) + 'CV'):
@@ -335,7 +334,8 @@ def main(argss):
         os.makedirs('./result/Details', exist_ok=True)
 
         # short, bp, batch_size, species, dataset_path
-        test, test_dataset, test_iter = test_dataLoad(short, bp, batch_size,species='human', dataset_path=data_dir + '/test.pickle')
+        test, test_dataset, test_iter = test_dataLoad(short, bp, batch_size,
+                                                      species='human', dataset_path=data_dir + '/test_dataset.pickle')
         # save_data(epoch_num, losses, training_accuracies, valid_losses, valid_accuracies)
         TPs, FPs, FNs, TNs = test_model(vector, test_dataset, test_batchsize, model, test_iter, device, embedding, test)
 
