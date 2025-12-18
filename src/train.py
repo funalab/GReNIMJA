@@ -1,3 +1,5 @@
+import copy
+
 import torch
 import torch.nn.functional
 import time
@@ -6,7 +8,7 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 def train_model(vector, train_datasets, valid_datasets, batch_size, model, lossFn, optimizer, epoch_num, iter, device,
-                embedding, epochs, sigopt, C_k):
+                embedding, epochs, sigopt, C_k, save_dir_models):
     train_num, valid_num = iter[0], iter[1]
     train_batchsize, valid_batchsize = batch_size[0], batch_size[1]
     losses = []
@@ -14,6 +16,7 @@ def train_model(vector, train_datasets, valid_datasets, batch_size, model, lossF
     valid_accuracies = []
     valid_losses = []
     iter = 0
+    valid_max = 0
     for epoch in range(epochs, epoch_num + 1):
         print(f'Epoch {epoch}/{epoch_num}')
         print('Training ...')
@@ -134,8 +137,13 @@ def train_model(vector, train_datasets, valid_datasets, batch_size, model, lossF
                   "time", e_time - s_time)
             print(f"Total iteration: {iter}")
             torch.save({'epoch': epoch, 'model_state_dict': model.state_dict(),
-                        'optimizer_state_dict': optimizer.state_dict()}, f'checkpoint/' + str(C_k)
-                       + 'checkpoint/checkpoint' + str(epoch) + '.pt')
+                        'optimizer_state_dict': optimizer.state_dict()},
+                       f'{save_dir_models}/{C_k}_{epoch}.pt')
+            if val_max < valid_accuracy:
+                val_max = copy.deepcopy(valid_accuracy)
+                torch.save({'epoch': epoch, 'model_state_dict': model.state_dict(),
+                            'optimizer_state_dict': optimizer.state_dict()},
+                           f'{save_dir_models}/best_model.pt')
 
             if sigopt == 'TRUE':
                 if epoch > 4:

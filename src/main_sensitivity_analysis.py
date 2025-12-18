@@ -35,9 +35,6 @@ def main(argss):
     device = torch.device('cuda')
     device2 = 'cuda'
 
-    # initial state
-    check = './checkpoint/init_checkpoint.pt'
-
     # dataset
     dataset = 'choice'
     order = 2  # TRUE: 1, FALSE: 2
@@ -186,7 +183,8 @@ def main(argss):
         ####################
 
     os.makedirs(save_dir, exist_ok=True)
-    os.makedirs('./checkpoint', exist_ok=True)
+    save_dir_models = f'{save_dir}/models'
+    os.makedirs(save_dir_models, exist_ok=True)
 
     m_para = [embedding, pre, att, learn, cnn1_1, rnn, fusion, device, CNN, biLSTM]
     param = [a_hiddendim, d_hiddendim, co_hiddendim, co_hiddendim2, linear2_inputDim, rnn2d_dim, conv_num, D_p, kernel_size, kernel_stride, output_channel, max_pool_len, DA, R]
@@ -276,7 +274,7 @@ def main(argss):
     # 最適化の手法はAdamを使う(適当)
     optimizer = torch.optim.Adam(model.parameters(), lr=0.00001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
     torch.save({'epoch': 0, 'model_state_dict': model.state_dict(),
-                'optimizer_state_dict': optimizer.state_dict()}, f'checkpoint/init_checkpoint.pt')
+                'optimizer_state_dict': optimizer.state_dict()}, f'{save_dir_models}/init_checkpoint.pt')
 
 
     # training
@@ -289,10 +287,10 @@ def main(argss):
 
     for i in range(0, 1):
         print(i)
-        checkpoint = torch.load(check, map_location=torch.device('cpu'))
-        model.load_state_dict(checkpoint["model_state_dict"])
-        optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
-        epoch = checkpoint["epoch"] + 1
+        # checkpoint = torch.load(check, map_location=torch.device('cpu'))
+        # model.load_state_dict(checkpoint["model_state_dict"])
+        # optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
+        # epoch = checkpoint["epoch"] + 1
 
         train_dataset, valid_dataset, iter = data_load(CV_para, short, bp, data_dir, i, batch_size)
 
@@ -300,50 +298,50 @@ def main(argss):
         losses, training_accuracies, valid_losses, valid_accuracies = train_model(vector, train_dataset, valid_dataset,
                                                                               batch_size, model, lossFn, optimizer,
                                                                               epoch_num, iter, device, embedding,
-                                                                              epoch, sigopt, i)
+                                                                              1, sigopt, i, save_dir_models)
         cv_trainLoss.append(losses)
         cv_trainAC.append(training_accuracies)
         cv_validLoss.append(valid_losses)
         cv_validAC.append(valid_accuracies)
         print(cv_validLoss)
 
-    if sigopt != 'TRUE':
-        # cross validationした中でvalidationのaccuracyが最大の時を取得する
-        cv_validAC = np.array(cv_validAC)
-        idx = np.unravel_index(np.argmax(cv_validAC), cv_validAC.shape)
-        c = idx[0]  # 何回目のcrossか
-        max_index = idx[1]  # 何エポック目か
-
-        #max_value = max(valid_accuracies)
-        #min_index = valid_accuracies.index(max_value)
-        #min_value = min(valid_losses)
-        #min_index = valid_losses.index(min_value)
-        #print(min_index + 1)
-        check = './checkpoint/' + str(c) + 'checkpoint/checkpoint' + str(max_index + 1) + '.pt'
-        checkpoint = torch.load(check, map_location=torch.device('cpu'))
-        model.load_state_dict(checkpoint["model_state_dict"])
-        optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
-        epoch = checkpoint["epoch"] + 1
-        os.makedirs('./result/Details', exist_ok=True)
-
-        # short, bp, batch_size, species, dataset_path
-        test, test_dataset, test_iter = test_dataLoad(short, bp, batch_size,
-                                                      species='human', dataset_path=data_dir + '/test_dataset.pickle')
-        # save_data(epoch_num, losses, training_accuracies, valid_losses, valid_accuracies)
-        TPs, FPs, FNs, TNs = test_model(vector, test_dataset, test_batchsize, model, test_iter, device, embedding, test)
-
-        test_TPs = test.iloc[TPs, [0, 1, 2, 3, 4, 5, 6]]
-        test_TPs.to_csv('result/Details/TPs', sep='\t', index=False)
-        test_FPs = test.iloc[FPs, [0, 1, 2, 3, 4, 5, 6]]
-        test_FPs.to_csv('result/Details/FPs', sep='\t', index=False)
-        test_FNs = test.iloc[FNs, [0, 1, 2, 3, 4, 5, 6]]
-        test_FNs.to_csv('result/Details/FNs', sep='\t', index=False)
-        test_TNs = test.iloc[TNs, [0, 1, 2, 3, 4, 5, 6]]
-        test_TNs.to_csv('result/Details/TNs', sep='\t', index=False)
-
-    else:
-        valid_losses = sorted(valid_losses)
-        print(-1 * valid_losses[0])
+    # if sigopt != 'TRUE':
+    #     # cross validationした中でvalidationのaccuracyが最大の時を取得する
+    #     cv_validAC = np.array(cv_validAC)
+    #     idx = np.unravel_index(np.argmax(cv_validAC), cv_validAC.shape)
+    #     c = idx[0]  # 何回目のcrossか
+    #     max_index = idx[1]  # 何エポック目か
+    #
+    #     #max_value = max(valid_accuracies)
+    #     #min_index = valid_accuracies.index(max_value)
+    #     #min_value = min(valid_losses)
+    #     #min_index = valid_losses.index(min_value)
+    #     #print(min_index + 1)
+    #     check = './checkpoint/' + str(c) + 'checkpoint/checkpoint' + str(max_index + 1) + '.pt'
+    #     checkpoint = torch.load(check, map_location=torch.device('cpu'))
+    #     model.load_state_dict(checkpoint["model_state_dict"])
+    #     optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
+    #     epoch = checkpoint["epoch"] + 1
+    #     os.makedirs('./result/Details', exist_ok=True)
+    #
+    #     # short, bp, batch_size, species, dataset_path
+    #     test, test_dataset, test_iter = test_dataLoad(short, bp, batch_size,
+    #                                                   species='human', dataset_path=data_dir + '/test_dataset.pickle')
+    #     # save_data(epoch_num, losses, training_accuracies, valid_losses, valid_accuracies)
+    #     TPs, FPs, FNs, TNs = test_model(vector, test_dataset, test_batchsize, model, test_iter, device, embedding, test)
+    #
+    #     test_TPs = test.iloc[TPs, [0, 1, 2, 3, 4, 5, 6]]
+    #     test_TPs.to_csv('result/Details/TPs', sep='\t', index=False)
+    #     test_FPs = test.iloc[FPs, [0, 1, 2, 3, 4, 5, 6]]
+    #     test_FPs.to_csv('result/Details/FPs', sep='\t', index=False)
+    #     test_FNs = test.iloc[FNs, [0, 1, 2, 3, 4, 5, 6]]
+    #     test_FNs.to_csv('result/Details/FNs', sep='\t', index=False)
+    #     test_TNs = test.iloc[TNs, [0, 1, 2, 3, 4, 5, 6]]
+    #     test_TNs.to_csv('result/Details/TNs', sep='\t', index=False)
+    #
+    # else:
+    #     valid_losses = sorted(valid_losses)
+    #     print(-1 * valid_losses[0])
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
